@@ -1,0 +1,116 @@
+/* 🌐 ESTRUCTURA BASE DE LA PÁGINA */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🧱 CONTENEDOR PRINCIPAL DEL DASHBOARD */
+.dashboard-container {
+  padding: 5rem;
+  height: calc(83vh - 65px); /* Ocupa toda la pantalla menos el navbar */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* 🏷️ TÍTULO GENERAL */
+.titulo-principal {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #112344;
+  font-size: 40px;
+}
+
+/* 📦 CONTENIDO DIVIDIDO EN DOS COLUMNAS */
+.contenido-dashboard {
+  display: flex;
+  gap: 5rem;
+  height: 100%;
+}
+
+/* 📍 PANEL IZQUIERDO: contiene dos secciones de 50% cada una */
+.panel-izquierdo {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 📍 PANEL DERECHO: una sola sección al 100% */
+.panel-derecho {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 📐 CONTENEDORES GENERALES DE SECCIÓN */
+.contenedor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Si se necesita un contenedor más alto (como en el panel derecho), se puede usar esta clase extra */
+.contenedor-grande {
+  height: 100%;
+}
+
+/* 🏷️ TÍTULOS EXTERNOS DE CADA SECCIÓN */
+.titulo-seccion {
+  margin-bottom: 0.5rem;
+  color: #0e192e;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* 🧩 CUADROS CON BORDES Y COLOR DE FONDO */
+.seccion {
+  background-color: #f7f9fc;
+  border: 1px solid #ccd5e0;
+  border-radius: 10px;
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 📜 CONTENIDO SCROLLEABLE DENTRO DE LA SECCIÓN */
+.contenedor-scroll {
+  overflow-y: auto;
+  flex: 1;
+
+  /* Ocultar scroll en navegadores modernos */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.contenedor-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Edge */
+}
+
+/* 📊 TABLAS */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background-color: #e0e7ef;
+}
+
+/* 🔔 NOTIFICACIONES */
+.notificaciones {
+  list-style: disc inside;
+  padding-left: 1rem;
+}
+
+.notificaciones li {
+  margin-bottom: 0.5rem;
+}
