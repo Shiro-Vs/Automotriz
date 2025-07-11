@@ -6,8 +6,8 @@ const MenuDeslizable = () => {
     <div className="menu-deslizable">
       <ul>
         <li><a href="/citas">Citas</a></li>
-        <li><a href="/ficha-tecnica">Ficha Técnica</a></li>
-        <li><a href="/clientes">Clientes</a></li>
+        <li><a href="/fichatecnica">Ficha Técnica</a></li>
+        <li><a href="/dashboard">Clientes</a></li>
         {/* Agrega más opciones aquí */}
       </ul>
     </div>

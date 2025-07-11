@@ -2,12 +2,16 @@
 
 import '../Styles/Citas.css';
 import Modal from '../Components/ModalAgendarCita';
+import ModalEliminar from "../Components/ModalEliminar";
+
 
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 
 const Citas = () => {
+
     const [modalAbierto, setModalAbierto] = useState(false);
+    const [modalEliminarAbierto, setModalEliminarAbierto] = useState(false);
 
     return (
         <div className="pagina-citas">
@@ -45,19 +49,32 @@ const Citas = () => {
                             <td>Cambio de aceite</td>
                             <td>Ninguna</td>
                             <td>2025-07-07</td>
-                            <td><button className="boton-editar"><FaEdit /></button></td>
-                            <td><button className="boton-eliminar"><FaTrash /></button></td>
+                            <td>
+                                <button className="boton-editar" onClick={() => setModalAbierto(true)}><FaEdit /></button>
+                            </td>
+                            <td>
+                                <button className="boton-eliminar" onClick={() => setModalEliminarAbierto(true)}><FaTrash /></button>
+                            </td>
+
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            {/* Modal */}
             <Modal isOpen={modalAbierto} onClose={() => setModalAbierto(false)}>
                 {/* Aquí irá tu formulario en el futuro */}
                 <h2>Agendar nueva cita</h2>
                 <p>(Aquí irá tu formulario 👇)</p>
             </Modal>
+
+            <ModalEliminar
+                isOpen={modalEliminarAbierto}
+                onClose={() => setModalEliminarAbierto(false)}
+                onConfirm={() => {
+                    // Aquí va la lógica para eliminar una cita (más adelante)
+                    setModalEliminarAbierto(false);
+                }}
+            ></ModalEliminar>
 
         </div>
     );

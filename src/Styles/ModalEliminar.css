@@ -1,0 +1,101 @@
+/* Fondo oscurecido */
+.modal-eliminar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Caja principal del modal */
+.modal-eliminar-content {
+    background-color: #fff;
+    border-radius: 25px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.514);
+}
+
+/* Barra superior con logo */
+.modal-eliminar-navbar {
+    height: 65px;
+    background-color: #6C0D2D;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-eliminar-logo {
+    height: 100px;
+    object-fit: contain;
+}
+
+/* Cuerpo del modal */
+.modal-eliminar-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-eliminar-titulo {
+    margin: auto;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0e192e;
+    text-align: center;
+}
+
+.modal-eliminar-texto {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Botones */
+.modal-eliminar-botones {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.modal-eliminar-cancelar {
+    padding: 0.6rem 1.2rem;
+    background-color: #ccc;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-eliminar-cancelar:hover {
+    background-color: #bbb;
+}
+
+.modal-eliminar-confirmar {
+    padding: 0.6rem 1.2rem;
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-eliminar-confirmar:hover {
+    background-color: #e74c3c;
+}
