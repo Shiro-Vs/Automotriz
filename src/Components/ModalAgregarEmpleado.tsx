@@ -26,7 +26,7 @@ const ModalNuevoEmpleado = ({ isOpen, onClose }: ModalProps) => {
 
     return (
         <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
 
                 {/* Barra superior */}
                 <div className="modal-navbar">
