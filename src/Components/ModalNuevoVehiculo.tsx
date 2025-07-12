@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import logo from '../assets/Logos/logo.png';
 
-import '../Styles/ModalAgendarCita.css';
+import '../Styles/Modales/ModalNuevoVehiculo.css';
 
 interface ModalProps {
   isOpen: boolean;
@@ -34,19 +34,27 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
         {/* Contenido principal */}
         <div className="modal-body">
-          <h2 className="modal-titulo">Agendar nuevo vehículo</h2>
+          <h2 className="modal-titulo">Registrar nuevo vehículo</h2>
 
           <div className="formulario-columns">
             <div className="form-section">
+
               <h3>Cliente</h3>
-              <label>Nombre / Razón Social</label>
-              <input type="text" placeholder="Juan Pérez o Empresa SAC" />
 
               <label>DNI / RUC</label>
               <input type="text" placeholder="12345678 / 20123456789" />
 
+              <label>Nombre / Razón Social</label>
+              <input type="text" placeholder="Juan Pérez o Empresa SAC" />
+
               <label>Teléfono</label>
               <input type="text" placeholder="000 000 000" />
+
+              <label>Email</label>
+              <input type="text" placeholder="contacto@xyzsac.com" />
+
+              <label>Dirección</label>
+              <input type="text" placeholder="Av. Siempre Viva 123" />
             </div>
 
             <div className="form-section">
@@ -66,11 +74,6 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
               <label>Color</label>
               <input type="text" placeholder="Rojo, Azul..." />
 
-              <label>Observaciones</label>
-              <textarea placeholder="Especificaciones extra..." />
-
-              <label>Servicio</label>
-              <input type="text" placeholder="Cambio de aceite, revisión..." />
             </div>
           </div>
 

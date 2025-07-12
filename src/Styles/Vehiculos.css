@@ -12,10 +12,12 @@ body,
     display: flex;
     flex-direction: column;
     height: calc(100vh - 65px);
+    width: 80%;
     margin-top: 65px;
     padding: 2rem;
     box-sizing: border-box;
     font-family: 'Segoe UI', sans-serif;
+    margin: 65px auto 0 auto;
 }
 
 /* 🎯 Encabezado superior con título y botón */
@@ -49,16 +51,28 @@ body,
 /* 📦 Contenedor con scroll y encabezado fijo */
 .tabla-contenedor {
     flex: 1;
-    overflow-y: auto;
+    overflow-x: auto;              
+    overflow-y: auto;             
     border: 1px solid #ccd5e0;
     border-radius: 8px;
+    max-width: 100%;              
+    margin: 0 auto;               
+    scrollbar-width: none;        
+    -ms-overflow-style: none;    
 }
+
+/* 🔒 Oculta scroll en Webkit (Chrome, Safari) */
+.tabla-contenedor::-webkit-scrollbar {
+    display: none;
+}
+
 
 /* 🧾 Tabla */
 .tabla-citas {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     min-width: 1000px;
+    margin: 0 auto;
 }
 
 .tabla-citas thead {

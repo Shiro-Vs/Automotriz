@@ -1,5 +1,5 @@
 import logo from "../assets/Logos/Logo.png";
-import "../Styles/ModalEliminar.css";
+import "../Styles/Modales/ModalEliminar.css";
 
 type ModalEliminarProps = {
   isOpen: boolean;
@@ -18,7 +18,7 @@ const ModalEliminar = ({ isOpen, onClose, onConfirm }: ModalEliminarProps) => {
         </div>
         <div className="modal-eliminar-body">
           <h2 className="modal-eliminar-titulo">¿Estás seguro?</h2>
-          <p className="modal-eliminar-texto">Esta acción eliminará permanentemente la cita.</p>
+          <p className="modal-eliminar-texto">Esta acción eliminará permanentemente el vehiculo.</p>
           <div className="modal-eliminar-botones">
             <button className="modal-eliminar-cancelar" onClick={onClose}>Cancelar</button>
             <button className="modal-eliminar-confirmar" onClick={onConfirm}>Eliminar</button>

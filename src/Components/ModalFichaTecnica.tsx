@@ -3,15 +3,13 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import logo from "../assets/Logos/logo.png";
-import "../Styles/ModalAgendarCita.css"; // Reutiliza los estilos del otro modal
+import "../Styles/Modales/ModalFichaTecnica.css";
 
 interface ModalFichaTecnicaProps {
     isOpen: boolean;
     onClose: () => void;
     children?: ReactNode;
 }
-
-const [repuestosActivo, setRepuestosActivo] = useState(false);
 
 const ModalFichaTecnica = ({ isOpen, onClose }: ModalFichaTecnicaProps) => {
     useEffect(() => {
@@ -21,6 +19,9 @@ const ModalFichaTecnica = ({ isOpen, onClose }: ModalFichaTecnicaProps) => {
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
     }, [onClose]);
+
+    const [repuestosActivo, setRepuestosActivo] = useState(false);
+    const [otroServicioActivo, setOtroServicioActivo] = useState(false);
 
     if (!isOpen) return null;
 
@@ -35,83 +36,98 @@ const ModalFichaTecnica = ({ isOpen, onClose }: ModalFichaTecnicaProps) => {
                     <h2 className="modal-titulo">Ficha Técnica</h2>
 
                     <div className="formulario-columns">
-                        <div className="formulario-columns">
-                            {/* 🧍 Columna izquierda - Cliente y Vehículo */}
-                            <div className="form-section">
-                                <h3>Cliente</h3>
-                                <label>Seleccionar cliente</label>
-                                <select>
-                                    <option>-- Selecciona un cliente --</option>
-                                    <option>Juan Pérez</option>
-                                    <option>Empresa SAC</option>
-                                </select>
 
-                                <label>DNI / RUC</label>
-                                <input type="text" disabled placeholder="Se llenará automáticamente" />
+                        {/* 🧍 Columna izquierda - Cliente y Vehículo */}
+                        <div className="form-section">
+                            <h3>Cliente</h3>
+                            <label>Seleccionar cliente</label>
+                            <select>
+                                <option>-- Selecciona un cliente --</option>
+                                <option>Juan Pérez</option>
+                                <option>Empresa SAC</option>
+                            </select>
 
-                                <h3>Vehículo</h3>
-                                <label>Seleccionar vehículo</label>
-                                <select>
-                                    <option>-- Selecciona un vehículo --</option>
-                                    <option>ABC-123</option>
-                                    <option>XYZ-456</option>
-                                </select>
+                            <label>DNI / RUC</label>
+                            <input type="text" disabled placeholder="Se llenará automáticamente" />
 
-                                <label>Marca</label>
-                                <input type="text" disabled placeholder="Marca" />
+                            <h3>Vehículo</h3>
+                            <label>Seleccionar vehículo</label>
+                            <select>
+                                <option>-- Selecciona un vehículo --</option>
+                                <option>ABC-123</option>
+                                <option>XYZ-456</option>
+                            </select>
 
-                                <label>Modelo</label>
-                                <input type="text" disabled placeholder="Modelo" />
+                            <label>Marca</label>
+                            <input type="text" disabled placeholder="Marca" />
 
-                                <label>Color</label>
-                                <input type="text" disabled placeholder="Color" />
+                            <label>Color</label>
+                            <input type="text" disabled placeholder="Color" />
 
-                                <label>Observaciones</label>
-                                <textarea disabled placeholder="Observaciones" />
-                            </div>
+                            <label>Observaciones</label>
+                            <textarea placeholder="Observaciones" />
+                        </div>
 
-                            {/* 🔧 Columna derecha - Diagnóstico y Servicios */}
-                            <div className="form-section">
-                                <label>Diagnóstico inicial</label>
-                                <textarea placeholder="Descripción del diagnóstico inicial..." />
+                        {/* 🔧 Columna derecha - Diagnóstico y Servicios */}
+                        <div className="form-section">
+                            <h3>Detalles</h3>
+                            <label>Diagnóstico inicial</label>
+                            <textarea placeholder="Descripción del diagnóstico inicial..." />
 
-                                <label>Servicios/Reparaciones</label>
-                                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                                    <label><input type="checkbox" /> Cambio de aceite</label>
-                                    <label><input type="checkbox" /> Cambio de frenos</label>
-                                    <label><input type="checkbox" /> Revisión general</label>
-                                    <label><input type="checkbox" /> Alineación y balanceo</label>
-                                    <label><input type="checkbox" /> Sistema eléctrico</label>
-                                    <label>
-                                        <input type="checkbox" /> Otro:
-                                        <input type="text" placeholder="Especificar otro servicio" style={{ marginLeft: "0.5rem" }} />
-                                    </label>
-                                </div>
-
-                                <label>
+                            <label>Servicios/Reparaciones</label>
+                            <div className="servicios-checkboxes">
+                                <label className="checkbox-linea">
+                                    <input type="checkbox" />
+                                    Cambio de aceite
+                                </label>
+                                <label className="checkbox-linea">
+                                    <input type="checkbox" />
+                                    Revisión general
+                                </label>
+                                <label className="checkbox-linea">
+                                    <input type="checkbox" />
+                                    Alineación y balanceo
+                                </label>
+                                <label className="checkbox-linea">
                                     <input
                                         type="checkbox"
-                                        onChange={(e) => setRepuestosActivo(e.target.checked)}
-                                    /> ¿Agregar repuestos?
+                                        checked={otroServicioActivo}
+                                        onChange={(e) => setOtroServicioActivo(e.target.checked)}
+                                    />
+                                    Otro:
+                                    <input
+                                        type="text"
+                                        placeholder="Especificar otro servicio"
+                                        disabled={!otroServicioActivo}
+                                    />
                                 </label>
-                                <textarea
-                                    placeholder="Especificar repuestos necesarios..."
-                                    disabled={!repuestosActivo}
-                                />
-
-                                <label>Fecha estimada de salida</label>
-                                <input type="date" />
-
-                                <label>Estado</label>
-                                <select>
-                                    <option>En reparación</option>
-                                    <option>En espera</option>
-                                    <option>Terminado</option>
-                                    <option>Listo para entrega</option>
-                                    <option>Entregado</option>
-                                </select>
                             </div>
+
+                            <div className="repuesto-checkbox">
+                                <label>¿Agregar repuestos?</label>
+                                <input
+                                    type="checkbox"
+                                    onChange={(e) => setRepuestosActivo(e.target.checked)}
+                                />
+                            </div>
+                            <textarea
+                                placeholder="Especificar repuestos necesarios..."
+                                disabled={!repuestosActivo}
+                            />
+
+
+                            <label>Fecha estimada de salida</label>
+                            <input type="date" />
+
+                            <label>Estado</label>
+                            <select>
+                                <option>En reparación</option>
+                                <option>En espera</option>
+                                <option>Terminado</option>
+                                <option>Entregado</option>
+                            </select>
                         </div>
+
 
                     </div>
 
