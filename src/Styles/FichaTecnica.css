@@ -1,0 +1,23 @@
+
+.pagina-fichas .tabla-contenedor {
+  flex: 4;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+
+.pagina-fichas .tabla-citas {
+  min-width: 1200px; 
+  font-size: 13px;
+}
+
+.pagina-fichas .tabla-citas th,
+.pagina-fichas .tabla-citas td {
+  padding: 0.5rem;
+  font-size: 13px;
+}
+
+.pagina-fichas .filtros-contenedor {
+  flex: 1.2;
+  font-size: 13px;
+}

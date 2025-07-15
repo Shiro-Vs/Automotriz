@@ -1,0 +1,59 @@
+/* ESTRUCTURA BASE DE LA PÁGINA */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #eef6fd;
+}
+
+/* Estructura de la página completa */
+.pagina-citas {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 5.5rem auto 0 auto;
+  padding: 2rem;
+  box-sizing: border-box;
+  height: calc(100vh - 65px);
+}
+
+/* Contenedor principal: tabla + filtros */
+.contenido-principal {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  align-items: stretch; 
+  height: 75vh
+}
+
+/* Encabezado superior con título y botón */
+.encabezado-citas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.titulo-citas {
+  font-size: 28px;
+  color: #0e192e;
+  margin: 0;
+}
+
+.boton-agendar {
+  padding: 0.6rem 1.2rem;
+  background-color: #0e192e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-agendar:hover {
+  background-color: #1f2f4e;
+}
+
+
+

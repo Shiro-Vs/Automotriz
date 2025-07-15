@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 
 import logo from "../assets/Logos/logo.png";
+
 import "../Styles/Modales/ModalFichaTecnica.css";
 
 interface FichaTecnica {
@@ -68,11 +69,8 @@ const ModalFichaTecnica = ({ isOpen, onClose, onRegistroExitoso, fichaEditar }: 
     }, [isOpen]);
 
     useEffect(() => {
-        if (
-            fichaEditar &&
-            clientes.length > 0 &&
-            vehiculos.length > 0
-        ) {
+        if (fichaEditar && clientes.length > 0 && vehiculos.length > 0) {
+            // ✅ SETEAR DATOS DE EDICIÓN
             setObservaciones(fichaEditar.observaciones || "");
             setDiagnostico(fichaEditar.diagnosticoInicial || "");
 
@@ -84,20 +82,21 @@ const ModalFichaTecnica = ({ isOpen, onClose, onRegistroExitoso, fichaEditar }: 
             if (otroServicio) {
                 setOtroServicioActivo(true);
                 setOtroServicioTexto(otroServicio);
+            } else {
+                setOtroServicioActivo(false);
+                setOtroServicioTexto("");
             }
 
             setRepuestos(fichaEditar.repuestos || "");
             setRepuestosActivo(!!fichaEditar.repuestos);
             setFechaSalida(fichaEditar.fsalida || "");
 
-            // Setear estado traducido
             setEstado(
                 fichaEditar.estado === "EN_ESPERA" ? "En espera" :
                     fichaEditar.estado === "TERMINADO" ? "Terminado" :
                         "En reparación"
             );
 
-            // Buscar vehículo y cliente relacionados
             const vehiculo = vehiculos.find(v => v.id === fichaEditar.idVehiculo);
             if (vehiculo) {
                 setVehiculoSeleccionado(vehiculo);
@@ -108,6 +107,20 @@ const ModalFichaTecnica = ({ isOpen, onClose, onRegistroExitoso, fichaEditar }: 
                     setVehiculosCliente(filtrados);
                 }
             }
+        } else if (!fichaEditar && clientes.length > 0 && vehiculos.length > 0) {
+            // ✅ LIMPIAR CAMPOS PARA NUEVO REGISTRO
+            setObservaciones("");
+            setDiagnostico("");
+            setServicios([]);
+            setOtroServicioActivo(false);
+            setOtroServicioTexto("");
+            setRepuestos("");
+            setRepuestosActivo(false);
+            setFechaSalida("");
+            setEstado("En reparación");
+            setClienteSeleccionado(null);
+            setVehiculosCliente([]);
+            setVehiculoSeleccionado(null);
         }
     }, [fichaEditar, clientes, vehiculos]);
 

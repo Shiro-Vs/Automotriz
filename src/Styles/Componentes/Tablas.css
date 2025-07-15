@@ -1,0 +1,105 @@
+/* Contenedor de la tabla con scroll oculto */
+.tabla-contenedor {
+  flex: 3;
+  overflow-x: auto;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: #0000006b 0px 0px 10px 0px;
+  border-radius: 10px;
+  max-width: 100%;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+}
+
+.tabla-contenedor::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* -----------------------------Tabla--------------------------- */
+.tabla-citas {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+/* Encabezado */
+.tabla-citas thead tr {
+  background-color: #f08d8d;
+}
+
+.tabla-citas thead th {
+  background-color: rgb(14, 25, 46);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 0.8rem;
+  font-size: 14px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Cuerpo de la tabla */
+.tabla-citas td {
+  padding: 0.8rem;
+  font-size: 14px;
+  text-align: center; /* ← Centrado */
+  border: none;
+}
+
+.texto-centrado-bloque {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.texto-centrado-bloque ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+  padding-left: 1rem;
+}
+
+
+/* Evita que el cursor cambie al pasar por las filas de la tabla */
+.tabla-citas tbody tr {
+  cursor: default;
+}
+
+/* Filas alternas */
+.tabla-citas tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.tabla-citas tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+/* Hover */
+.tabla-citas tbody tr:hover {
+  background-color: #e6e6e6;
+}
+
+/* ----------------------Botones de acción----------------------- */
+.boton-editar,
+.boton-eliminar {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #0e192e;
+}
+
+.boton-editar:hover {
+  color: #2980b9;
+}
+
+.boton-eliminar {
+  color: #c0392b;
+}
+
+.boton-eliminar:hover {
+  color: #e74c3c;
+}

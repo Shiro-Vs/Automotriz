@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
-import '../Styles/Vehiculos.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+
+import '../Styles/General.css';
+import "../Styles/Componentes/Tablas.css";
+import "../Styles/Componentes/Filtros.css";
+
+import FormatoInputs from "../Components/FormatoInputs";
+import InputFechas from "../Components/InputFechas";
+
 import Modal from '../Components/ModalNuevoVehiculo';
 import ModalEliminar from "../Components/ModalEliminar";
 import ModalEditarClienteVehiculo from "../Components/ModalEditarClienteVehiculo";
-import { FaEdit, FaTrash } from 'react-icons/fa';
 
 interface Vehiculo {
     id: number;
@@ -18,8 +25,19 @@ interface Vehiculo {
 }
 
 const Citas = () => {
+
+    //Formatear inputs
+    const [anio, setAnio] = useState("");
+
+
+    //Fechas
+    const [fechaDesde, setFechaDesde] = useState<Date | null>(null);
+    const [fechaHasta, setFechaHasta] = useState<Date | null>(null);
+
     const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
     const [vehiculoSeleccionadoId, setVehiculoSeleccionadoId] = useState<number | null>(null);
+
+    //Modales
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalEliminarAbierto, setModalEliminarAbierto] = useState(false);
     const [modalEditarAbierto, setModalEditarAbierto] = useState(false);
@@ -36,29 +54,10 @@ const Citas = () => {
         nombreCliente: ''
     });
 
-
-    const registrarNuevoVehiculo = async (nuevoVehiculo: any) => {
-        try {
-            const res = await fetch("http://localhost:8080/api/vehiculos", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(nuevoVehiculo)
-            });
-
-            if (res.ok) {
-                const vehiculoCreado = await res.json(); // si devuelves el objeto creado
-                setVehiculos(prev => [...prev, vehiculoCreado]);
-                alert("Vehículo registrado correctamente.");
-                setModalAbierto(false);
-            } else {
-                const errorText = await res.text();
-                alert("Error al registrar: " + errorText);
-            }
-        } catch (error) {
-            console.error("Error al registrar vehículo:", error);
-            alert("Error inesperado al registrar el vehículo.");
-        }
-    };
+const registrarNuevoVehiculo = (vehiculoRegistrado: Vehiculo) => {
+  setVehiculos(prev => [...prev, vehiculoRegistrado]);
+  setModalAbierto(false);
+};
 
     // Cargar vehículos
     useEffect(() => {
@@ -196,20 +195,34 @@ const Citas = () => {
 
                 <div className="filtros-contenedor">
                     <h3>Filtros</h3>
+
                     <label>Fecha desde:</label>
-                    <input type="date" />
+                    <InputFechas
+                        fecha={fechaDesde}
+                        onChange={setFechaDesde}
+                        placeholder="dd/mm/aaaa"
+                    />
+
                     <label>Fecha hasta:</label>
-                    <input type="date" />
+                    <InputFechas
+                        fecha={fechaHasta}
+                        onChange={setFechaHasta}
+                        placeholder="dd/mm/aaaa"
+                    />
+
                     <label>Marca:</label>
-                    <input type="text" placeholder="Toyota" />
+                    <input type="text" placeholder="Ej: Toyota" />
                     <label>Modelo:</label>
-                    <input type="text" placeholder="Corolla" />
+                    <input type="text" placeholder="Ej: Corolla" />
                     <label>Año:</label>
-                    <input type="text" placeholder="2020" />
-                    <label>DNI / RUC:</label>
-                    <input type="text" placeholder="12345678 / 20..." />
-                    <button className="boton-filtrar">Filtrar</button>
-                    <button className="boton-exportar">Exportar Excel</button>
+                     <FormatoInputs tipo="anio" valor={anio} onChange={setAnio} placeholder="2020" />
+                    <label>Dueño:</label>
+                    <input type="text" placeholder="Ej: Maria Suarez" />
+
+                    <div className="contenedor-botones">
+                        <button className="boton-filtrar">Filtrar</button>
+                        <button className="boton-exportar">Exportar Excel</button>
+                    </div>
                 </div>
             </div>
 

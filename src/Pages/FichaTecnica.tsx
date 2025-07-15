@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-import "../Styles/Vehiculos.css";
+import "../Styles/General.css";
+import "../Styles/FichaTecnica.css";
+import "../Styles/Componentes/Tablas.css";
+import "../Styles/Componentes/Filtros.css";
+
+import FormatoInputs from "../Components/FormatoInputs";
+import InputFechas from "../Components/InputFechas";
 
 import ModalFichaTecnica from "../Components/ModalFichaTecnica";
 import ModalEliminar from "../Components/ModalEliminar";
@@ -23,6 +29,14 @@ interface FichaTecnica {
 }
 
 const FichasTecnicas = () => {
+
+  //Formatear inputs
+  const [placa, setPlaca] = useState("");
+
+  //Fechas
+  const [fechaDesde, setFechaDesde] = useState<Date | null>(null);
+  const [fechaHasta, setFechaHasta] = useState<Date | null>(null);
+
   const [fichas, setFichas] = useState<FichaTecnica[]>([]);
   const [modalFichaAbierto, setModalFichaAbierto] = useState(false);
 
@@ -88,7 +102,7 @@ const FichasTecnicas = () => {
   };
 
   return (
-    <div className="pagina-citas">
+    <div className="pagina-citas pagina-fichas">
       <div className="encabezado-citas">
         <h1 className="titulo-citas">Ficha Técnica</h1>
         <button
@@ -99,73 +113,116 @@ const FichasTecnicas = () => {
         </button>
       </div>
 
-      <div className="tabla-contenedor">
-        <table className="tabla-citas">
-          <thead>
-            <tr>
-              <th>Fecha de ingreso</th>
-              <th>Nombre</th>
-              <th>Placa</th>
-              <th>Marca</th>
-              <th>Color</th>
-              <th>Servicio</th>
-              <th>Repuestos</th>
-              <th>F. Estimada</th>
-              <th>Estado</th>
-              <th>F. de Entrega</th>
-              <th>Editar</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fichas.map((ficha) => (
-              <tr key={ficha.id}>
-                <td>{ficha.fingreso}</td>
-                <td>{ficha.nombreCliente}</td>
-                <td>{ficha.placaVehiculo}</td>
-                <td>{ficha.marcaVehiculo}</td>
-                <td>{ficha.colorVehiculo}</td>
-                <td>
-                  <ul style={{ paddingLeft: "1rem", margin: 0 }}>
-                    {formatearLista(ficha.servicios)}
-                  </ul>
-                </td>
-                <td>
-                  <ul style={{ paddingLeft: "1rem", margin: 0 }}>
-                    {formatearLista(ficha.repuestos)}
-                  </ul>
-                </td>
-                <td>{ficha.fsalida ? ficha.fsalida : "—"}</td>
-                <td>{traducirEstado(ficha.estado)}</td>
-                <td>{ficha.fsalida ? ficha.fsalida : "—"}</td>
-                <td>
-                  <button
-                    className="boton-editar"
-                    onClick={() => {
-                      setFichaEditar(ficha);            // ← Establece la ficha que se va a editar
-                      setModalFichaAbierto(true);      // ← Abre el modal
-                    }}
-                  >
-                    <FaEdit />
-                  </button>
-
-                </td>
-                <td>
-                  <button
-                    className="boton-eliminar"
-                    onClick={() => {
-                      setIdFichaSeleccionada(ficha.id);
-                      setModalEliminarAbierto(true);
-                    }}
-                  >
-                    <FaTrash />
-                  </button>
-
-                </td>
+      <div className="contenido-principal">
+        <div className="tabla-contenedor">
+          <table className="tabla-citas">
+            <thead>
+              <tr>
+                <th>F. de ingreso</th>
+                <th>Nombre</th>
+                <th>Placa</th>
+                <th>Marca</th>
+                <th>Color</th>
+                <th>Servicio</th>
+                <th>Repuestos</th>
+                <th>F. Estimada</th>
+                <th>Estado</th>
+                <th>F. de Entrega</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {fichas.map((ficha) => (
+                <tr key={ficha.id}>
+                  <td>{ficha.fingreso}</td>
+                  <td>{ficha.nombreCliente}</td>
+                  <td>{ficha.placaVehiculo}</td>
+                  <td>{ficha.marcaVehiculo}</td>
+                  <td>{ficha.colorVehiculo}</td>
+                  <td className="texto-centrado-bloque">
+                    <ul style={{ paddingLeft: "1rem", margin: 0 }}>
+                      {formatearLista(ficha.servicios)}
+                    </ul>
+                  </td>
+                  <td className="texto-centrado-bloque">
+                    <ul style={{ paddingLeft: "1rem", margin: 0 }}>
+                      {formatearLista(ficha.repuestos)}
+                    </ul>
+                  </td>
+                  <td>{ficha.fsalida ? ficha.fsalida : "—"}</td>
+                  <td>{traducirEstado(ficha.estado)}</td>
+                  <td>{ficha.fsalida ? ficha.fsalida : "—"}</td>
+                  <td>
+                    <button
+                      className="boton-editar"
+                      onClick={() => {
+                        setFichaEditar(ficha);
+                        setModalFichaAbierto(true);
+                      }}
+                    >
+                      <FaEdit />
+                    </button>
+
+                  </td>
+                  <td>
+                    <button
+                      className="boton-eliminar"
+                      onClick={() => {
+                        setIdFichaSeleccionada(ficha.id);
+                        setModalEliminarAbierto(true);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="filtros-contenedor">
+          <h3>Filtros</h3>
+
+          <label>Fecha desde:</label>
+          <InputFechas
+            fecha={fechaDesde}
+            onChange={setFechaDesde}
+            placeholder="dd/mm/aaaa"
+          />
+
+          <label>Fecha hasta:</label>
+          <InputFechas
+            fecha={fechaHasta}
+            onChange={setFechaHasta}
+            placeholder="dd/mm/aaaa"
+          />
+
+          <label>Nombre del cliente:</label>
+          <input type="text" placeholder="Ej: Juan Pérez" />
+
+          <label>Placa:</label>
+          <FormatoInputs tipo="placa" valor={placa} onChange={setPlaca} placeholder="ABC-123" />
+
+          <label>Marca:</label>
+          <input type="text" placeholder="Ej: Toyota" />
+
+          <label>Estado:</label>
+          <select>
+            <option value="">Todos</option>
+            <option value="EN_REPARACION">En reparación</option>
+            <option value="EN_ESPERA">En espera</option>
+            <option value="TERMINADO">Entregado</option>
+          </select>
+
+          <div className="contenedor-botones">
+            <button className="boton-filtrar">Filtrar</button>
+            <button className="boton-exportar">Exportar Excel</button>
+          </div>
+        </div>
+
       </div>
 
       <ModalFichaTecnica

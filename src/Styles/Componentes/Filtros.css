@@ -1,0 +1,78 @@
+/* --------------------------Filtros a la derecha-------------------------- */
+.filtros-contenedor {
+  flex: 1;
+  background-color: #ffffff;
+  box-shadow: #0000006b 0px 0px 10px 0px;
+  padding: 1.5rem;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+.filtros-contenedor h3 {  
+  margin: 0;
+  color: #0e192e;
+  font-size: 18px;
+}
+
+.filtros-contenedor label {
+  font-weight: 500;
+  color: #112233;
+  margin-top: 0.5rem;
+}
+
+.filtros-contenedor input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccd5e0;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+
+.filtros-contenedor input:focus {
+  outline: none;
+  border-color: rgb(14, 25, 46);
+}
+
+/* 🧰 Botones de filtros */
+.contenedor-botones {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.boton-filtrar,
+.boton-exportar {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+
+.boton-filtrar {
+  background-color: #3bcc75;
+  color: white;
+}
+
+.boton-filtrar:hover {
+  background-color: #33b867;
+}
+
+.boton-exportar {
+  background-color: #ffc845;
+  color: #000;
+}
+
+.boton-exportar:hover {
+  background-color: #e0a523;
+}

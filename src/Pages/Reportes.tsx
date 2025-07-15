@@ -1,4 +1,6 @@
-import "../Styles/Vehiculos.css";
+import "../Styles/General.css";
+import "../Styles/Componentes/Tablas.css";
+import "../Styles/Componentes/Filtros.css";
 
 const Clientes = () => {
   return (

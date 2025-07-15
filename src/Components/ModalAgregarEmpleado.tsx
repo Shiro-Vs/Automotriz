@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+
 import logo from '../assets/Logos/logo.png';
+
 import '../Styles/Modales/ModalNuevoVehiculo.css';
 
 interface ModalProps {

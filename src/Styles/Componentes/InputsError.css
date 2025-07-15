@@ -1,0 +1,30 @@
+/* Solo aplica para fechas */
+.input-fecha-con-calendario {
+  position: relative;
+  width: 100%;
+}
+
+/* Estilo idéntico a tus inputs normales */
+.input-formateado.input-fecha {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccd5e0;
+  border-radius: 10px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mantiene el estilo cuando hay error */
+.input-error {
+  border-color: red;
+}
+
+/* El mensaje flota abajo pero no empuja el diseño */
+.mensaje-error {
+  position: absolute;
+  bottom:  -1.7rem;
+  left: 0.5rem;
+  font-size: 12px;
+  color: red;
+  pointer-events: none;
+}

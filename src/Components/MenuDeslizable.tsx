@@ -1,5 +1,5 @@
 // src/components/MenuDeslizable.tsx
-import '../Styles/MenuDesplegable.css';
+import '../Styles/Componentes/MenuDesplegable.css';
 
 const MenuDeslizable = () => {
   return (
@@ -9,11 +9,10 @@ const MenuDeslizable = () => {
         <li><a href="/fichatecnica">Ficha Técnica</a></li>
         <li><a href="/clientes">Clientes</a></li>
         <li><a href="/Empleados">Trabajadores</a></li>
-        <li><a href="/Reportes">Reportes</a></li>
-        {/* Agrega más opciones aquí */}
+        <li><a href="/reportes">Reportes</a></li>
       </ul>
     </div>
   );
 };
-// comentario
+
 export default MenuDeslizable;

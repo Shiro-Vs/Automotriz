@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import "../Styles/Vehiculos.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import ModalEliminar from "../Components/ModalEliminar";
 
+import "../Styles/General.css";
+import "../Styles/Componentes/Tablas.css";
+import "../Styles/Componentes/Filtros.css";
+
+import ModalEliminar from "../Components/ModalEliminar";
 import ModalEditarClienteVehiculo from "../Components/ModalEditarClienteVehiculo";
+import FormatoInputs from "../Components/FormatoInputs";
 
 interface Cliente {
   id: number;
@@ -15,6 +19,11 @@ interface Cliente {
 }
 
 const Clientes = () => {
+
+  // Formatear inputs
+  const [telefono, setTelefono] = useState("");
+
+
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [modalEliminarAbierto, setModalEliminarAbierto] = useState(false);
   const [clienteSeleccionadoId, setClienteSeleccionadoId] = useState<number | null>(null);
@@ -103,47 +112,90 @@ const Clientes = () => {
         <h1 className="titulo-citas">Clientes</h1>
       </div>
 
-      <div className="tabla-contenedor">
-        <table className="tabla-citas">
-          <thead>
-            <tr>
-              <th>Nombre / Razón social</th>
-              <th>DNI / RUC</th>
-              <th>Teléfono</th>
-              <th>Email</th>
-              <th>Dirección</th>
-              <th>Editar</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clientes.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.nombre}</td>
-                <td>{cliente.dni}</td>
-                <td>{cliente.celular}</td>
-                <td>{cliente.email}</td>
-                <td>{cliente.direccion}</td>
-                <td>
-                  <button className="boton-editar" onClick={() => handleEditarClick(cliente)}>
-                    <FaEdit />
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="boton-eliminar"
-                    onClick={() => {
-                      setClienteSeleccionadoId(cliente.id);
-                      setModalEliminarAbierto(true);
-                    }}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
+      <div className="contenido-principal">
+        <div className="tabla-contenedor">
+          <table className="tabla-citas">
+            <thead>
+              <tr>
+                <th>Nombre / Razón social</th>
+                <th>DNI / RUC</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {clientes.map((cliente) => (
+                <tr key={cliente.id}>
+                  <td>{cliente.nombre}</td>
+                  <td>{cliente.dni}</td>
+                  <td>{cliente.celular}</td>
+                  <td>{cliente.email}</td>
+                  <td>{cliente.direccion}</td>
+                  <td>
+                    <button className="boton-editar" onClick={() => handleEditarClick(cliente)}>
+                      <FaEdit />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="boton-eliminar"
+                      onClick={() => {
+                        setClienteSeleccionadoId(cliente.id);
+                        setModalEliminarAbierto(true);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="filtros-contenedor">
+          <h3>Filtrar clientes</h3>
+
+          <label htmlFor="nombre">Nombre o Razón Social:</label>
+          <input
+            id="nombre"
+            type="text"
+            placeholder="Ej. Juan Pérez o Mi Empresa SAC"
+            className="input-estilo"
+          />
+
+          <label htmlFor="documento">DNI o RUC:</label>
+          <input
+            id="documento"
+            type="text"
+            placeholder="Ej. 12345678 o 20123456789"
+            className="input-estilo"
+          />
+
+          <label htmlFor="telefono">Teléfono:</label>
+          <FormatoInputs
+            tipo="telefono"
+            valor={telefono}
+            onChange={setTelefono}
+            placeholder="Ej. 987654321"
+            className="input-estilo"
+          />
+
+          <label htmlFor="email">Email:</label>
+          <input
+            id="email"
+            type="text"
+            placeholder="correo@ejemplo.com"
+            className="input-estilo"
+          />
+
+          <div className="contenedor-botones">
+            <button className="boton-filtrar">Filtrar</button>
+            <button className="boton-exportar">Exportar Excel</button>
+          </div>
+        </div>
       </div>
 
       <ModalEliminar
