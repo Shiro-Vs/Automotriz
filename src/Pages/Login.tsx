@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ModalErrorInicioSesion from '../Components/Modales/ModalErrorInicioSesion';
+import ModalRegistrarAsistencia from '../Components/Modales/ModalRegistrarAsistencia';
 
 const Login = () => {
   // 🎯 Estados locales
@@ -11,6 +12,7 @@ const Login = () => {
   const [contrasenia, setContrasena] = useState("");        // Contraseña ingresada
   const [verPassword, setVerPassword] = useState(false);    // Mostrar u ocultar contraseña
   const [mostrarError, setMostrarError] = useState(false);  // Mostrar modal de error
+  const [mostrarAsistenciaModal, setMostrarAsistenciaModal] = useState(false);
 
   const navigate = useNavigate(); // Redirección
 
@@ -25,22 +27,42 @@ const Login = () => {
         body: JSON.stringify({ dni: usuario, contrasenia }),
       });
 
+      const contentType = response.headers.get("content-type");
+
       if (!response.ok) {
-        // Si credenciales son inválidas o error 401, mostrar modal
+        // Si es texto plano (como "Acceso restringido..."), lo tratamos como tal
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          console.warn("❌ Error JSON:", errorData);
+        } else {
+          const errorText = await response.text();
+          console.warn("❌ Error texto:", errorText);
+        }
+
         setMostrarError(true);
+        setUsuario("");
+        setContrasena("");
         return;
       }
 
+      // ✅ Si todo salió bien
       const data = await response.json();
+      console.log("✅ Respuesta del backend:", data);
 
-      // 🧠 Guardar nombre del usuario en localStorage
       localStorage.setItem("usuarioActual", data.nombre);
+      localStorage.setItem("rolUsuario", data.rol);
 
-      // 🔄 Redirigir al dashboard
-      navigate('/dashboard');
+      if (data.rol.toLowerCase() === 'mecánico' || data.rol.toLowerCase() === 'mecanico') {
+        setMostrarAsistenciaModal(true);
+      } else {
+        navigate('/dashboard');
+      }
 
-    } catch {
-      // 🌐 Error de red o servidor desconectado
+      setUsuario("");
+      setContrasena("");
+
+    } catch (error) {
+      console.error("❌ Error de red o servidor:", error);
       setMostrarError(true);
     }
   };
@@ -106,7 +128,14 @@ const Login = () => {
       {mostrarError && (
         <ModalErrorInicioSesion onClose={() => setMostrarError(false)} />
       )}
+
+      {mostrarAsistenciaModal && (
+        <ModalRegistrarAsistencia onClose={() => setMostrarAsistenciaModal(false)} />
+      )}
+
     </div>
+
+
   );
 };
 
