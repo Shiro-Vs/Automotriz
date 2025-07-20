@@ -1,7 +1,7 @@
 // src/Components/ModalEditarClienteVehiculo.tsx
 import { useEffect } from 'react';
-import logo from '../assets/Logos/logo.png';
-import '../Styles/Modales/ModalNuevoVehiculo.css';
+import logo from '../../assets/Logos/logo.png';
+import '../../Styles/Modales/ModalNuevoVehiculo.css';
 
 interface CampoFormulario {
   name: string;

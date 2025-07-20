@@ -22,7 +22,7 @@
 /* El mensaje flota abajo pero no empuja el diseño */
 .mensaje-error {
   position: absolute;
-  bottom:  -1.7rem;
+  margin-top: -0.5rem; /* Empuja ligeramente hacia abajo */
   left: 0.5rem;
   font-size: 12px;
   color: red;

@@ -1,9 +1,9 @@
 // src/Components/ModalFichaTecnica.tsx
 import { useEffect, useState } from "react";
 
-import logo from "../assets/Logos/logo.png";
+import logo from "../../assets/Logos/logo.png";
 
-import "../Styles/Modales/ModalFichaTecnica.css";
+import "../../Styles/Modales/ModalFichaTecnica.css";
 
 interface FichaTecnica {
     id: number;

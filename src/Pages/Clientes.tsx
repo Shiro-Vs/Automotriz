@@ -5,9 +5,10 @@ import "../Styles/General.css";
 import "../Styles/Componentes/Tablas.css";
 import "../Styles/Componentes/Filtros.css";
 
-import ModalEliminar from "../Components/ModalEliminar";
-import ModalEditarClienteVehiculo from "../Components/ModalEditarClienteVehiculo";
+import ModalEliminar from "../Components/Modales/ModalEliminar";
+import ModalEditarClienteVehiculo from "../Components/Modales/ModalEditarClienteVehiculo";
 import FormatoInputs from "../Components/FormatoInputs";
+import Filtros from "../Components/Filtros";
 
 interface Cliente {
   id: number;
@@ -22,7 +23,11 @@ const Clientes = () => {
 
   // Formatear inputs
   const [telefono, setTelefono] = useState("");
-
+  const [filtroNombre, setFiltroNombre] = useState("");
+  const [filtroDocumento, setFiltroDocumento] = useState("");
+  const [filtroTelefono, setFiltroTelefono] = useState("");
+  const [filtroEmail, setFiltroEmail] = useState("");
+  const [documento, setDocumento] = useState(""); // para dni o ruc
 
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [modalEliminarAbierto, setModalEliminarAbierto] = useState(false);
@@ -59,6 +64,26 @@ const Clientes = () => {
       setClienteSeleccionadoId(null);
       setModalEliminarAbierto(false);
     }
+  };
+
+  const aplicarFiltros = () => {
+    fetch("http://localhost:8080/api/clientes")
+      .then((res) => res.json())
+      .then((data) => {
+        const filtrados = data.filter((cliente: Cliente) => {
+          const coincideNombre = cliente.nombre.toLowerCase().includes(filtroNombre.toLowerCase());
+          const coincideDocumento = cliente.dni.includes(filtroDocumento);
+          const coincideTelefono = cliente.celular.includes(filtroTelefono);
+          const coincideEmail = cliente.email?.toLowerCase().includes(filtroEmail.toLowerCase()) ?? false;
+          return coincideNombre && coincideDocumento && coincideTelefono && coincideEmail;
+        });
+        setClientes(filtrados);
+      })
+      .catch((err) => console.error("Error al filtrar clientes:", err));
+  };
+
+  const exportarClientesExcel = () => {
+    alert("Función de exportar aún no implementada");
   };
 
   const handleEditarClick = (cliente: Cliente) => {
@@ -132,8 +157,8 @@ const Clientes = () => {
                   <td>{cliente.nombre}</td>
                   <td>{cliente.dni}</td>
                   <td>{cliente.celular}</td>
-                  <td>{cliente.email}</td>
-                  <td>{cliente.direccion}</td>
+                  <td>{cliente.email || "Sin correo!"}</td>
+                  <td>{cliente.direccion || "Sin dirección!"}</td>
                   <td>
                     <button className="boton-editar" onClick={() => handleEditarClick(cliente)}>
                       <FaEdit />
@@ -155,47 +180,24 @@ const Clientes = () => {
             </tbody>
           </table>
         </div>
-        <div className="filtros-contenedor">
-          <h3>Filtrar clientes</h3>
+        <Filtros
+          titulo="Filtrar clientes"
+          campos={[
+            { tipo: "input", label: "Nombre o Razón Social", value: filtroNombre, onChange: setFiltroNombre, placeholder: "Ej. Juan Pérez" },
+            { tipo: "formato", label: "DNI o RUC", value: filtroDocumento, onChange: setFiltroDocumento, formatoTipo: undefined, placeholder: "Ej. 20123456789 o 12345678" },
+            { tipo: "formato", label: "Teléfono", value: filtroTelefono, onChange: setFiltroTelefono, formatoTipo: "telefono", placeholder: "Ej. 987654321" },
+            { tipo: "input", label: "Email", value: filtroEmail, onChange: setFiltroEmail, placeholder: "correo@ejemplo.com" },
+          ]}
+          onFiltrar={() => aplicarFiltros()}
+          onExportar={() => exportarClientesExcel()}
+          onLimpiar={() => {
+            setFiltroNombre("");
+            setFiltroDocumento("");
+            setFiltroTelefono("");
+            setFiltroEmail("");
+          }}
+        />
 
-          <label htmlFor="nombre">Nombre o Razón Social:</label>
-          <input
-            id="nombre"
-            type="text"
-            placeholder="Ej. Juan Pérez o Mi Empresa SAC"
-            className="input-estilo"
-          />
-
-          <label htmlFor="documento">DNI o RUC:</label>
-          <input
-            id="documento"
-            type="text"
-            placeholder="Ej. 12345678 o 20123456789"
-            className="input-estilo"
-          />
-
-          <label htmlFor="telefono">Teléfono:</label>
-          <FormatoInputs
-            tipo="telefono"
-            valor={telefono}
-            onChange={setTelefono}
-            placeholder="Ej. 987654321"
-            className="input-estilo"
-          />
-
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="text"
-            placeholder="correo@ejemplo.com"
-            className="input-estilo"
-          />
-
-          <div className="contenedor-botones">
-            <button className="boton-filtrar">Filtrar</button>
-            <button className="boton-exportar">Exportar Excel</button>
-          </div>
-        </div>
       </div>
 
       <ModalEliminar

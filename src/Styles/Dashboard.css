@@ -1,116 +1,114 @@
-/* 🌐 ESTRUCTURA BASE DE LA PÁGINA */
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* 🧱 CONTENEDOR PRINCIPAL DEL DASHBOARD */
+/* Contenedor principal del dashboard */
 .dashboard-container {
   padding: 5rem;
-  height: calc(83vh - 65px); /* Ocupa toda la pantalla menos el navbar */
-  font-family: 'Segoe UI', sans-serif;
+  min-height: calc(100vh - 80px);
 }
 
-/* 🏷️ TÍTULO GENERAL */
+/* Título principal centrado */
 .titulo-principal {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 30px;
+  font-size: 45px;
   color: #112344;
-  font-size: 40px;
 }
 
-/* 📦 CONTENIDO DIVIDIDO EN DOS COLUMNAS */
-.contenido-dashboard {
+/* Contenedor principal con 3 columnas */
+.contenido-principal {
   display: flex;
-  gap: 5rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
   height: 100%;
 }
 
-/* 📍 PANEL IZQUIERDO: contiene dos secciones de 50% cada una */
-.panel-izquierdo {
-  flex: 2;
+/* Columnas izquierda (tablas), centro (gráficos), derecha (KPIs) */
+.columna-izquierda,
+.columna-centro {
+  flex: 3;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
-}
-
-/* 📍 PANEL DERECHO: una sola sección al 100% */
-.panel-derecho {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 📐 CONTENEDORES GENERALES DE SECCIÓN */
-.contenedor {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* Si se necesita un contenedor más alto (como en el panel derecho), se puede usar esta clase extra */
-.contenedor-grande {
+  gap: 20px;
   height: 100%;
 }
 
-/* 🏷️ TÍTULOS EXTERNOS DE CADA SECCIÓN */
-.titulo-seccion {
-  margin-bottom: 0.5rem;
-  color: #0e192e;
-  font-size: 18px;
-  font-weight: 600;
+.columna-derecha {
+  margin-left: 5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
 }
 
-/* 🧩 CUADROS CON BORDES Y COLOR DE FONDO */
-.seccion {
-  background-color: #f7f9fc;
-  border: 1px solid #ccd5e0;
+/* Tablas y gráficos */
+.tabla,
+.grafico {
+  background-color: #fff;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 50%;
 }
 
-/* 📜 CONTENIDO SCROLLEABLE DENTRO DE LA SECCIÓN */
-.contenedor-scroll {
-  overflow-y: auto;
-  flex: 1;
-
-  /* Ocultar scroll en navegadores modernos */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+.grafico {
+  align-items: center;
+   justify-content: center;
 }
 
-.contenedor-scroll::-webkit-scrollbar {
-  display: none; /* Chrome, Safari y Edge */
+/* Canvas dentro de los gráficos */
+.grafico canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: 90% !important;
+  height: auto !important;
+  display: block;
 }
 
-/* 📊 TABLAS */
-table {
+/* Estilo de las tablas */
+.tabla table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
-th, td {
-  border: 1px solid #ccc;
+.tabla th,
+.tabla td {
+  border-bottom: 1px solid #ddd;
   padding: 8px;
   text-align: left;
-  font-size: 14px;
 }
 
-th {
-  background-color: #e0e7ef;
+/* KPI cards en columna */
+.columna-derecha {
+  align-items: stretch;
 }
 
-/* 🔔 NOTIFICACIONES */
-.notificaciones {
-  list-style: disc inside;
-  padding-left: 1rem;
+/* Cada tarjeta KPI */
+.kpi {
+  background-color: rgb(23, 43, 78);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  flex: none;
+  min-width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.534);
 }
 
-.notificaciones li {
-  margin-bottom: 0.5rem;
+.kpi h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.kpi p {
+  font-size: 24px;
+  font-weight: bold;
 }

@@ -91,6 +91,7 @@ textarea {
     font-size: 14px;
     width: 100%;
     resize: none;
+    margin-bottom: 0.6rem;
 }
 
 /* Botón de enviar */

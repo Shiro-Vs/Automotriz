@@ -9,8 +9,8 @@ import "../Styles/Componentes/Filtros.css";
 import FormatoInputs from "../Components/FormatoInputs";
 import InputFechas from "../Components/InputFechas";
 
-import ModalFichaTecnica from "../Components/ModalFichaTecnica";
-import ModalEliminar from "../Components/ModalEliminar";
+import ModalFichaTecnica from "../Components/Modales/ModalFichaTecnica";
+import ModalEliminar from "../Components/Modales/ModalEliminar";
 
 interface FichaTecnica {
   id: number;
@@ -220,6 +220,7 @@ const FichasTecnicas = () => {
           <div className="contenedor-botones">
             <button className="boton-filtrar">Filtrar</button>
             <button className="boton-exportar">Exportar Excel</button>
+            <button className="boton-limpiar">Limpiar filtros</button>
           </div>
         </div>
 

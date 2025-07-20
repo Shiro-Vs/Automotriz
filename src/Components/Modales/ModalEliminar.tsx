@@ -1,5 +1,5 @@
-import logo from "../assets/Logos/Logo.png";
-import "../Styles/Modales/ModalEliminar.css";
+import logo from "../../assets/Logos/Logo.png";
+import "../../Styles/Modales/ModalEliminar.css";
 
 type ModalEliminarProps = {
   isOpen: boolean;

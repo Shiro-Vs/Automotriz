@@ -23,8 +23,10 @@ const formatearFecha = (date: Date): string => {
 const parsearFecha = (texto: string): Date | null => {
   const partes = texto.split("/");
   if (partes.length !== 3) return null;
+
   const [dd, mm, yyyy] = partes.map(Number);
-  const fecha = new Date(`${yyyy}-${mm}-${dd}`);
+  const fecha = new Date(yyyy, mm - 1, dd); // ← FIX aquí
+
   return (
     !isNaN(fecha.getTime()) &&
     fecha.getDate() === dd &&
@@ -49,6 +51,12 @@ const InputFechas: React.FC<Props> = ({ fecha, onChange, placeholder }) => {
     }
   }, [fecha]);
 
+  const esFechaEnRango = (fecha: Date): boolean => {
+    const min = new Date("1950-01-01");
+    const max = new Date();
+    return fecha >= min && fecha <= max;
+  };
+
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const limpio = e.target.value.replace(/\D/g, "").slice(0, 8);
     let formateado = limpio;
@@ -64,24 +72,23 @@ const InputFechas: React.FC<Props> = ({ fecha, onChange, placeholder }) => {
     const limpio = texto.replace(/\D/g, ""); // Solo números
 
     if (limpio.length < 8) {
-      // Si no hay una fecha completa, no validamos ni mostramos error
+      // Si no hay una fecha completa, no mostramos error
       setError("");
       onChange(null);
       return;
     }
 
     const fechaValida = parsearFecha(texto);
-    if (fechaValida) {
+
+    if (fechaValida && esFechaEnRango(fechaValida)) {
       onChange(fechaValida);
       setTexto(formatearFecha(fechaValida));
       setError("");
     } else {
       onChange(null);
-      setError("Fecha inválida");
+      setError("Fecha inválida. Debe estar entre 01/01/1950 y hoy.");
     }
   };
-
-
 
   const handleCalendarChange = (fechaSeleccionada: Date | null) => {
     onChange(fechaSeleccionada);

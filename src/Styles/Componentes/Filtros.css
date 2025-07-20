@@ -42,12 +42,14 @@
   margin-top: auto;
   display: flex;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
 }
 
+/* 🎯 Estilo base para todos los botones */
 .boton-filtrar,
-.boton-exportar {
-  width: 100%;
+.boton-exportar,
+.boton-limpiar {
+  flex: 1;
   padding: 0.7rem 1rem;
   border: none;
   border-radius: 8px;
@@ -55,10 +57,10 @@
   font-weight: bold;
   font-size: 14px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-
+/* 🎯 Colores individuales */
 .boton-filtrar {
   background-color: #3bcc75;
   color: white;
@@ -75,4 +77,21 @@
 
 .boton-exportar:hover {
   background-color: #e0a523;
+}
+
+.boton-limpiar {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.boton-limpiar:hover {
+  background-color: #d6d6d6;
+}
+
+/* 🛑 Mensaje de error para filtros */
+.filtros-contenedor .mensaje-error {
+  position: absolute;
+  color: red;
+  font-size: 12px;
+  margin-top: -0.2rem; 
 }
