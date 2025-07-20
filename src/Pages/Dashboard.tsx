@@ -18,6 +18,9 @@ import '../Styles/Dashboard.css';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
 const Dashboard = () => {
+
+  const nombreUsuario = localStorage.getItem("usuarioActual");
+
   const [kpi] = useState({
     vehiculosHoy: 12,
     serviciosFinalizados: 8,
@@ -85,7 +88,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1 className="titulo-principal">Bienvenido Robert</h1>
+      <h1 className="titulo-principal">Bienvenido {nombreUsuario}</h1>
 
       <div className="contenido-principal">
         <div className="columna-izquierda">

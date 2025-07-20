@@ -7,7 +7,7 @@ import FichaTecnica from '../Pages/FichaTecnica';
 import Vehiculos from '../Pages/Vehiculos';
 import Clientes from '../Pages/Clientes';
 import Empleados from '../Pages/Empleados';
-import Reportes from '../Pages/Reportes';
+import Asistencias from '../Pages/Asistencias';
 
 const AppRouter = () => {
   return (
@@ -18,7 +18,7 @@ const AppRouter = () => {
       <Route path="/fichatecnica" element={<FichaTecnica />} />
       <Route path="/clientes" element={<Clientes />} />
       <Route path="/empleados" element={<Empleados />} />
-      <Route path="/reportes" element={<Reportes />} />
+      <Route path="/asistencias" element={<Asistencias />} />
       {/* Agrega más rutas aquí */}
     </Routes>
   );

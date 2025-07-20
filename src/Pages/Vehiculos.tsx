@@ -68,8 +68,17 @@ const Vehiculos = () => {
 
   // ➕ Registrar vehículo
   const registrarNuevoVehiculo = (vehiculo: Vehiculo) => {
-    setVehiculos(prev => [...prev, vehiculo]);
+    setVehiculos(prev => {
+      const actualizados = [...prev, vehiculo];
+      setVehiculosFiltrados(actualizados); // 👈 también actualizamos la tabla
+      return actualizados;
+    });
     setModalAbierto(false);
+
+    // Mostrar modal de éxito si lo deseas aquí
+    setMensajeExito("Vehículo registrado correctamente.");
+    setTituloExito("¡Registro Exitoso!");
+    setModalExitoAbierto(true);
   };
 
   // 🔁 Obtener vehículos del backend
@@ -293,19 +302,54 @@ const Vehiculos = () => {
       />
 
       <ModalEditarClienteVehiculo
+        // Control de visibilidad del modal
         isOpen={modalEditarAbierto}
         onClose={() => setModalEditarAbierto(false)}
+
+        // Título del modal
         titulo="Editar Vehículo"
+
+        // Campos que se mostrarán en el formulario del modal
         campos={[
-          { name: 'placa', label: 'Placa', type: 'text', value: vehiculoEditando.placa },
-          { name: 'marca', label: 'Marca', type: 'text', value: vehiculoEditando.marca },
-          { name: 'modelo', label: 'Modelo', type: 'text', value: vehiculoEditando.modelo },
-          { name: 'anio', label: 'Año', type: 'number', value: vehiculoEditando.anio.toString() },
-          { name: 'color', label: 'Color', type: 'text', value: vehiculoEditando.color }
+          {
+            name: 'placa',
+            label: 'Placa',
+            type: 'text',
+            value: vehiculoEditando.placa, // Valor actual de la placa
+          },
+          {
+            name: 'marca',
+            label: 'Marca',
+            type: 'text',
+            value: vehiculoEditando.marca, // Valor actual de la marca
+          },
+          {
+            name: 'modelo',
+            label: 'Modelo',
+            type: 'text',
+            value: vehiculoEditando.modelo, // Valor actual del modelo
+          },
+          {
+            name: 'anio',
+            label: 'Año',
+            type: 'number',
+            value: vehiculoEditando.anio?.toString() || '', // Convertimos a string, con fallback vacío
+          },
+          {
+            name: 'color',
+            label: 'Color',
+            type: 'text',
+            value: vehiculoEditando.color, // Valor actual del color
+          },
         ]}
+
+        // Función que maneja cambios en los inputs
         onChange={handleInputChange}
+
+        // Función que guarda los cambios realizados
         onSubmit={guardarCambiosVehiculo}
       />
+
     </div>
   );
 };

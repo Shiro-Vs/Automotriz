@@ -2,12 +2,14 @@
 import { useEffect } from 'react';
 import logo from '../../assets/Logos/logo.png';
 import '../../Styles/Modales/ModalNuevoVehiculo.css';
+import FormatoInputs from '../FormatoInputs';
 
 interface CampoFormulario {
   name: string;
   label: string;
   type: string;
   value: string;
+  formatoTipo?: "ruc" | "dni" | "telefono" | "anio" | "placa" | "email" | "color" | "rucdni";
 }
 
 interface ModalEditarClienteVehiculoProps {
@@ -53,12 +55,29 @@ const ModalEditarClienteVehiculo = ({
               {campos.map((campo) => (
                 <div key={campo.name}>
                   <label>{campo.label}</label>
-                  <input
-                    name={campo.name}
-                    type={campo.type}
-                    value={campo.value}
-                    onChange={onChange}
-                  />
+
+                  {campo.formatoTipo ? (
+                    <FormatoInputs
+                      tipo={campo.formatoTipo}
+                      valor={campo.value}
+                      onChange={(value) => {
+                        onChange({
+                          target: {
+                            name: campo.name,
+                            value,
+                          },
+                        } as React.ChangeEvent<HTMLInputElement>);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      name={campo.name}
+                      type={campo.type}
+                      value={campo.value}
+                      onChange={onChange}
+                    />
+                  )}
+
                 </div>
               ))}
             </div>

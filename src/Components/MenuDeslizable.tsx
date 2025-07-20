@@ -9,7 +9,7 @@ const MenuDeslizable = () => {
         <li><a href="/fichatecnica">Ficha Técnica</a></li>
         <li><a href="/clientes">Clientes</a></li>
         <li><a href="/Empleados">Trabajadores</a></li>
-        <li><a href="/reportes">Reportes</a></li>
+        <li><a href="/Asistencias">Asistencias</a></li>
       </ul>
     </div>
   );

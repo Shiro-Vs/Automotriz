@@ -42,12 +42,20 @@
   flex-direction: column;
 }
 
-/* Cuerpo del modal */
+/*Cuerpo del modal*/
 .modal-body {
   padding: 0rem 5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  overflow-y: scroll; /* permite el scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+
+/* Ocultar scrollbar en WebKit (Chrome, Safari) */
+.modal-body::-webkit-scrollbar {
+  display: none;
 }
 
 /* Título */

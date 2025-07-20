@@ -1,20 +1,21 @@
-// 📦 Dependencias
+// 📦 DEPENDENCIAS
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-// 🎨 Estilos
+// 🎨 ESTILOS
 import "../Styles/General.css";
 import "../Styles/Componentes/Tablas.css";
 import "../Styles/Componentes/Filtros.css";
 import "../Styles/Modales/ModalNuevoEmpleado.css";
 
-// 🧩 Componentes
-import FormatoInputs from "../Components/FormatoInputs";
+// 🧩 COMPONENTES
 import Filtros from "../Components/Filtros";
 import ModalNuevoEmpleado from "../Components/Modales/ModalAgregarEmpleado";
 import ModalEliminar from "../Components/Modales/ModalEliminar";
+import ModalRegistroExito from "../Components/Modales/ModalRegistroExito";
 
-// 🧾 Interfaces
+
+// 🧾 INTERFACES
 interface Trabajador {
   id: number;
   nombre: string;
@@ -29,28 +30,33 @@ interface Trabajador {
   rol: string;
 }
 
+// 🧠 COMPONENTE PRINCIPAL
 const Empleados = () => {
-  // 🧪 Estados - Formato
+
+  // 🔢 ESTADOS - Formato
   const [dni, setDni] = useState("");
   const [telefono, setTelefono] = useState("");
 
-  // 🎯 Estados - Filtros
+  // 🎯 ESTADOS - Filtros
   const [nombre, setNombre] = useState("");
   const [estado, setEstado] = useState("");
   const [rol, setRol] = useState("");
 
-  // 👷 Estados - Trabajadores
+  // 👷 ESTADOS - Trabajadores
   const [trabajadores, setTrabajadores] = useState<Trabajador[]>([]);
   const [trabajadoresFiltrados, setTrabajadoresFiltrados] = useState<Trabajador[]>([]);
   const [idTrabajadorSeleccionado, setIdTrabajadorSeleccionado] = useState<number | null>(null);
 
-  // 💬 Estados - Modales
+  // 💬 ESTADOS - Modales
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalEliminarAbierto, setModalEliminarAbierto] = useState(false);
   const [modoFormulario, setModoFormulario] = useState<"registrar" | "editar">("registrar");
   const [trabajadorAEditar, setTrabajadorAEditar] = useState<Trabajador | null>(null);
+  const [modalExitoAbierto, setModalExitoAbierto] = useState(false);
+  const [mensajeExito, setMensajeExito] = useState("");
+  const [tituloExito, setTituloExito] = useState("");
 
-  // 🔁 Cargar trabajadores desde API
+  // 📥 CARGAR TRABAJADORES DESDE API
   const cargarTrabajadores = async () => {
     try {
       const res = await fetch("http://localhost:8080/api/trabajadores");
@@ -66,7 +72,7 @@ const Empleados = () => {
     cargarTrabajadores();
   }, []);
 
-  // ❌ Eliminar trabajador
+  // ❌ ELIMINAR TRABAJADOR
   const handleEliminarTrabajador = async () => {
     if (idTrabajadorSeleccionado === null) return;
 
@@ -79,7 +85,7 @@ const Empleados = () => {
         cargarTrabajadores();
       } else {
         const mensaje = await res.text();
-        alert(mensaje);
+        console.warn("Mensaje del servidor:", mensaje);
       }
     } catch (error) {
       console.error("Error al eliminar trabajador:", error);
@@ -90,7 +96,13 @@ const Empleados = () => {
     }
   };
 
-  // 🔍 Filtrar trabajadores
+  // 🔒 FUNCIÓN PARA CERRAR MODAL NUEVO/EDITAR
+  const handleClose = () => {
+    setModalAbierto(false);
+    setTrabajadorAEditar(null);
+  };
+
+  // 🔍 FILTRAR TRABAJADORES
   const filtrarTrabajadores = () => {
     const filtrados = trabajadores.filter(t =>
       (!nombre || t.nombre.toLowerCase().includes(nombre.toLowerCase())) &&
@@ -103,7 +115,20 @@ const Empleados = () => {
     setTrabajadoresFiltrados(filtrados);
   };
 
-  // 🔄 Limpiar filtros
+  const handleEmpleadoRegistrado = (accion: "registrado" | "editado") => {
+    cargarTrabajadores();
+    setTituloExito(accion === "registrado" ? "¡Empleado Registrado!" : "¡Empleado Editado!");
+    setMensajeExito(
+      accion === "registrado"
+        ? "El nuevo trabajador ha sido registrado correctamente."
+        : "Los datos del trabajador han sido actualizados correctamente."
+    );
+    setModalExitoAbierto(true);
+  };
+
+
+
+  // ♻️ LIMPIAR FILTROS
   const limpiarFiltros = () => {
     setNombre("");
     setDni("");
@@ -113,10 +138,12 @@ const Empleados = () => {
     setTrabajadoresFiltrados(trabajadores);
   };
 
+  // 🧱 RENDERIZADO
   return (
     <>
       <div className="pagina-citas">
-        {/* Encabezado */}
+
+        {/* 🧭 ENCABEZADO */}
         <div className="encabezado-citas">
           <h1 className="titulo-citas">Trabajadores</h1>
           <button
@@ -132,7 +159,8 @@ const Empleados = () => {
         </div>
 
         <div className="contenido-principal">
-          {/* Tabla */}
+
+          {/* 📊 TABLA DE TRABAJADORES */}
           <div className="tabla-contenedor">
             <table className="tabla-citas">
               <thead>
@@ -156,10 +184,10 @@ const Empleados = () => {
                     <td>{t.nombre}</td>
                     <td>{t.dni}</td>
                     <td>{t.celular}</td>
-                    <td>{t.email}</td>
-                    <td>{t.direccion}</td>
-                    <td>{t.fechaIngreso}</td>
-                    <td>{t.fechaRetiro || "—"}</td>
+                    <td>{t.email || "No tiene Correo?"}</td>
+                    <td>{t.direccion || "Sin dirección :("}</td>
+                    <td>{t.fechaIngreso.split("-").reverse().join("/")}</td>
+                    <td>{t.fechaRetiro ? t.fechaRetiro.split("-").reverse().join("/") : "------"}</td>
                     <td>{t.estado ? "Activo" : "Inactivo"}</td>
                     <td>{t.rol}</td>
                     <td>
@@ -191,7 +219,7 @@ const Empleados = () => {
             </table>
           </div>
 
-          {/* Filtros reutilizables */}
+          {/* 🧰 FILTROS */}
           <Filtros
             campos={[
               {
@@ -235,8 +263,8 @@ const Empleados = () => {
                 onChange: setRol,
                 opciones: [
                   { label: "Todos", value: "" },
-                  { label: "Admin", value: "admin" },
-                  { label: "Mecánico", value: "mecánico" }
+                  { label: "Administrador", value: "Administrador" },
+                  { label: "Mecánico", value: "Mecánico" }
                 ]
               }
             ]}
@@ -247,23 +275,32 @@ const Empleados = () => {
         </div>
       </div>
 
-      {/* Modales */}
+      {/* 🪟 MODAL: NUEVO/EDITAR EMPLEADO */}
       <ModalNuevoEmpleado
         isOpen={modalAbierto}
-        onClose={() => {
-          setModalAbierto(false);
-          cargarTrabajadores();
-        }}
+        onClose={handleClose}
         modo={modoFormulario}
+        empleadosExistentes={trabajadores}
         trabajadorSeleccionado={trabajadorAEditar}
+        onEmpleadoRegistrado={handleEmpleadoRegistrado} // ✅ aquí
       />
 
+
+      {/* 🗑️ MODAL: CONFIRMAR ELIMINACIÓN */}
       <ModalEliminar
         isOpen={modalEliminarAbierto}
         onClose={() => setModalEliminarAbierto(false)}
         onConfirm={handleEliminarTrabajador}
         entidad="el trabajador"
       />
+
+      <ModalRegistroExito
+        isOpen={modalExitoAbierto}
+        onClose={() => setModalExitoAbierto(false)}
+        titulo={tituloExito}
+        mensaje={mensajeExito}
+      />
+
     </>
   );
 };

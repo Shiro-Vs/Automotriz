@@ -8,6 +8,7 @@ interface Props {
   placeholder?: string;
   className?: string; // clase del input (ej: "input-formateado input-fecha")
   disabled?: boolean;
+  mensajeErrorExtra?: string;
 }
 
 // 🔹 Mensajes de error por tipo
@@ -113,7 +114,7 @@ const obtenerMaxLength = (tipo: Props["tipo"]): number | undefined => {
     case "anio": return 4;
     case "placa": return 7;
     case "color": return 50;
-    case "rucdni": return 13; 
+    case "rucdni": return 13;
     default: return undefined;
   }
 };
@@ -127,6 +128,7 @@ const FormatoInputs: React.FC<Props> = ({
   placeholder,
   className = "",
   disabled,
+  mensajeErrorExtra,
 }) => {
   const [valido, setValido] = useState(true);
 
@@ -140,7 +142,10 @@ const FormatoInputs: React.FC<Props> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const texto = e.target.value;
     const formateado = formatearValor(texto, tipo);
-    onChange(formateado);
+    // Evita bucle infinito: solo actualiza si cambia
+    if (formateado !== valor) {
+      onChange(formateado);
+    }
   };
 
   return (
@@ -154,11 +159,11 @@ const FormatoInputs: React.FC<Props> = ({
         maxLength={obtenerMaxLength(tipo)}
         className={`${className} ${!valido ? "input-error" : ""}`}
       />
-      {valor.trim() !== "" && !valido && (
+      {(valor.trim() !== "" && !valido) || mensajeErrorExtra ? (
         <div className="mensaje-error">
-          {obtenerMensajeError(tipo)}
+          {mensajeErrorExtra ? mensajeErrorExtra : obtenerMensajeError(tipo)}
         </div>
-      )}
+      ) : null}
 
     </div>
   );
