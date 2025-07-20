@@ -1,0 +1,64 @@
+.calendario {
+  flex: 2;
+  min-width: 300px;
+  max-width: 890px;
+  background-color: #12203b;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.486);
+}
+
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.encabezado button {
+    background-color: #3bcc75;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.encabezado-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.dias {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dia {
+    background-color: #eee;
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.dia.puntual {
+    background-color: #c8f7c5;
+}
+
+.dia.tardanza {
+    background-color: #ffe194;
+}
+
+.dia.falta {
+    background-color: #f8c8c8;
+}

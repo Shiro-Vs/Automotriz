@@ -1,0 +1,153 @@
+/* 📄 Estructura principal de la página */
+.pagina-citas {
+    width: 80%;
+}
+
+/* 🔽 Estilo del selector de trabajador */
+.select-trabajador {
+    max-width: 500px;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.486);
+}
+
+/* 🧱 Contenedor conjunto de datos + cards */
+.bloque-datos-y-cards {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+/* 🧑‍🔧 Contenedor de datos del trabajador */
+.datos-trabajador {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.486);
+}
+
+/* 📦 Contenedor centrado para los cards */
+.contenedor-cards {
+    display: flex;
+    flex: 1;
+    justify-content: center;     /* centra horizontalmente */
+    align-items: center;         /* centra verticalmente */
+    min-height: 100%;            /* asegúrate que tenga altura suficiente para centrar */
+}
+
+/* 📊 Cards resumen (asistencias, tardanzas, faltas) */
+.cards-resumen {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card.resumen {
+    background-color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    min-width: 120px;
+    flex: 1;
+}
+
+.card.resumen h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.card.resumen p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0.5rem 0 0;
+}
+
+/* 🎨 Bordes laterales de color por tipo de card */
+.card.asistencias {
+    border-left: 5px solid #3bcc75;
+}
+
+.card.tardanzas {
+    border-left: 5px solid #ffb830;
+}
+
+.card.faltas {
+    border-left: 5px solid #ff4d4d;
+}
+
+/* 📅 Contenedor de calendario + formulario */
+.contenido-asistencias {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+}
+
+/* ⏱️ Formulario de horarios del trabajador */
+.horarios-trabajador {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.486);
+}
+
+.horarios-trabajador label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+}
+
+.horarios-trabajador input {
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.horarios-trabajador button {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background-color: #3bcc75;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 📆 Checkboxes de días de descanso */
+.dias-descanso .checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.dias-descanso label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
