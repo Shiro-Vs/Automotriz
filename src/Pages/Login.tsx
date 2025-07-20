@@ -2,19 +2,24 @@
 import '../Styles/Login.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import axios from 'axios';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ModalErrorInicioSesion from '../Components/Modales/ModalErrorInicioSesion';
 import ModalRegistrarAsistencia from '../Components/Modales/ModalRegistrarAsistencia';
+import ModalError from '../Components/Modales/ModalError';
 
 const Login = () => {
-  // 🎯 Estados locales
-  const [usuario, setUsuario] = useState("");               // DNI ingresado
-  const [contrasenia, setContrasena] = useState("");        // Contraseña ingresada
-  const [verPassword, setVerPassword] = useState(false);    // Mostrar u ocultar contraseña
-  const [mostrarError, setMostrarError] = useState(false);  // Mostrar modal de error
+  const [usuario, setUsuario] = useState("");
+  const [contrasenia, setContrasena] = useState("");
+  const [verPassword, setVerPassword] = useState(false);
   const [mostrarAsistenciaModal, setMostrarAsistenciaModal] = useState(false);
+  const [trabajadorId, setTrabajadorId] = useState<number | null>(null);
+  const [trabajadorRol, setTrabajadorRol] = useState<string | null>(null);
+  const [mostrarError, setMostrarError] = useState(false);
+  const [mensajeError, setMensajeError] = useState('');
+  const [mostrarErrorCredenciales, setMostrarErrorCredenciales] = useState(false);
 
-  const navigate = useNavigate(); // Redirección
+  const navigate = useNavigate();
 
   // 🔐 Manejador del formulario
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,55 +32,109 @@ const Login = () => {
         body: JSON.stringify({ dni: usuario, contrasenia }),
       });
 
-      const contentType = response.headers.get("content-type");
-
       if (!response.ok) {
-        // Si es texto plano (como "Acceso restringido..."), lo tratamos como tal
-        if (contentType && contentType.includes("application/json")) {
-          const errorData = await response.json();
-          console.warn("❌ Error JSON:", errorData);
-        } else {
-          const errorText = await response.text();
-          console.warn("❌ Error texto:", errorText);
-        }
-
-        setMostrarError(true);
+        setMostrarErrorCredenciales(true);
         setUsuario("");
         setContrasena("");
         return;
       }
 
-      // ✅ Si todo salió bien
       const data = await response.json();
-      console.log("✅ Respuesta del backend:", data);
+      console.log("✅ Login exitoso:", data);
 
       localStorage.setItem("usuarioActual", data.nombre);
       localStorage.setItem("rolUsuario", data.rol);
+      localStorage.setItem("idUsuario", data.id);
 
-      if (data.rol.toLowerCase() === 'mecánico' || data.rol.toLowerCase() === 'mecanico') {
+      const rol = data.rol.toLowerCase();
+      const fechaActual = new Date();
+      const fecha = fechaActual.toISOString().split("T")[0];
+      const horaEntrada = fechaActual.toTimeString().split(" ")[0];
+
+      if (rol === "administrador") {
+        const asistenciaResponse = await fetch("http://localhost:8080/api/asistencias", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            idTrabajador: data.id,
+            fecha,
+            horaEntrada,
+            llegoTarde: false,
+            falto: false,
+          }),
+        });
+
+        const resultado = await asistenciaResponse.text(); // <- ⚠️ Es un texto plano
+
+        if (resultado === "El usuario está inactivo.") {
+          setMensajeError("Usuario inactivo");
+          setMostrarError(true);
+          return;
+        }
+
+        navigate("/dashboard");
+      }
+      else if (rol === "mecanico" || rol === "mecánico") {
+        setTrabajadorId(data.id);
+        setTrabajadorRol(rol);
         setMostrarAsistenciaModal(true);
-      } else {
-        navigate('/dashboard');
       }
 
-      setUsuario("");
-      setContrasena("");
-
     } catch (error) {
-      console.error("❌ Error de red o servidor:", error);
+      console.error("❌ Error de red:", error);
+      setMensajeError("Error de red o servidor");
       setMostrarError(true);
     }
   };
+
+  // ✅ Registrar asistencia desde el modal
+  const handleRegistrarAsistencia = async (idTrabajador: number, rol: string) => {
+    try {
+      const fechaActual = new Date();
+      const fecha = fechaActual.toISOString().split("T")[0];
+      const horaEntrada = fechaActual.toTimeString().split(" ")[0];
+
+      const asistencia = {
+        idTrabajador: idTrabajador,
+        fecha,
+        horaEntrada,
+        llegoTarde: false,
+        falto: false,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/api/asistencias",
+        asistencia
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        console.log("✅ Asistencia registrada correctamente");
+
+        if (rol !== "mecanico" && rol !== "mecánico") {
+          navigate("/dashboard");
+        } else {
+          alert("✅ Asistencia registrada. Contacta al administrador para más funciones.");
+        }
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        setMensajeError("Usuario inactivo"); // Tu mensaje personalizado
+        setMostrarError(true); // Abrir el modal
+      } else {
+        setMensajeError("Ocurrió un error al registrar asistencia");
+        setMostrarError(true);
+      }
+    }
+  };
+
+
 
   return (
     <div className="fondo-login">
       <div className="login-container">
         <h2>SAF SERVICE</h2>
 
-        {/* 📋 Formulario de inicio de sesión */}
         <form className="login-form" onSubmit={handleSubmit}>
-
-          {/* 🧍‍♂️ Usuario (DNI) */}
           <label htmlFor="usuario">Usuario</label>
           <input
             id="usuario"
@@ -88,7 +147,6 @@ const Login = () => {
             onBlur={(e) => (e.target.placeholder = "43841945")}
           />
 
-          {/* 🔑 Contraseña + botón de mostrar/ocultar */}
           <label htmlFor="contrasena">Contraseña</label>
           <div className="input-con-icono">
             <input
@@ -109,33 +167,45 @@ const Login = () => {
             </span>
           </div>
 
-          {/* ❓ Enlace para recuperación */}
           <div className="olvido-contrasena">
             <a href="#">¿Se te olvidó la contraseña?</a>
           </div>
 
-          {/* ✅ Botón ingresar */}
           <button type="submit">Ingresar</button>
 
-          {/* 📄 Pie de página */}
           <p className="copyright">
             @SafService todos los derechos reservados 2025
           </p>
         </form>
       </div>
 
-      {/* ❌ Modal en caso de error */}
-      {mostrarError && (
-        <ModalErrorInicioSesion onClose={() => setMostrarError(false)} />
+      {/* ❌ Modal de error */}
+      {mostrarErrorCredenciales && (
+        <ModalErrorInicioSesion onClose={() => setMostrarErrorCredenciales(false)} />
       )}
 
-      {mostrarAsistenciaModal && (
-        <ModalRegistrarAsistencia onClose={() => setMostrarAsistenciaModal(false)} />
+
+      {/* ✅ Modal para mecánicos */}
+      {mostrarAsistenciaModal && trabajadorId !== null && trabajadorRol && (
+        <ModalRegistrarAsistencia
+          idTrabajador={trabajadorId}
+          onClose={() => setMostrarAsistenciaModal(false)}
+          registrar={async (confirmado: boolean) => {
+            if (confirmado) {
+              await handleRegistrarAsistencia(trabajadorId, trabajadorRol);
+            }
+            setMostrarAsistenciaModal(false);
+          }}
+        />
       )}
+
+      <ModalError
+        isOpen={mostrarError}
+        mensaje={mensajeError}
+        onClose={() => setMostrarError(false)}
+      />
 
     </div>
-
-
   );
 };
 
