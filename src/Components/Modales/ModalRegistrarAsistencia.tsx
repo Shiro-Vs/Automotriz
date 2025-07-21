@@ -11,6 +11,7 @@ interface ModalRegistrarAsistenciaProps {
 
 const ModalRegistrarAsistencia = ({ onClose, registrar, idTrabajador }: ModalRegistrarAsistenciaProps) => {
   const usuario = localStorage.getItem("usuarioActual");
+  console.log("ID del trabajador:", idTrabajador);
 
   const handleRegistrarAsistencia = () => {
     registrar(true); // ✅ delega al componente padre
