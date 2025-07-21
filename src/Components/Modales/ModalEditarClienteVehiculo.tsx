@@ -1,6 +1,6 @@
 // src/Components/ModalEditarClienteVehiculo.tsx
 import { useEffect } from 'react';
-import logo from '../../assets/Logos/logo.png';
+import logo from '../../assets/Logos/Logo.png';
 import '../../Styles/Modales/ModalNuevoVehiculo.css';
 import FormatoInputs from '../FormatoInputs';
 
