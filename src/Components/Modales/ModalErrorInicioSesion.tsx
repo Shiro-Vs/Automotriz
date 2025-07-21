@@ -1,6 +1,6 @@
 // ModalErrorInicioSesion.tsx
 import '../../Styles/Modales/ModalError.css';
-import logo from '../../assets/Logos/logo.png'; // ✅ Usa tu logo aquí
+import logo from '../../assets/Logos/Logo.png'; // ✅ Usa tu logo aquí
 
 interface Props {
   onClose: () => void;

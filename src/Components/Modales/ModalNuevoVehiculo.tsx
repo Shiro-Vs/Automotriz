@@ -1,6 +1,6 @@
 // 🔹 Importaciones necesarias
 import { useEffect, useState } from 'react';
-import logo from '../../assets/Logos/logo.png';
+import logo from '../../assets/Logos/Logo.png';
 import '../../Styles/Modales/ModalNuevoVehiculo.css';
 import FormatoInputs from '../FormatoInputs';
 import ModalError from './ModalError';

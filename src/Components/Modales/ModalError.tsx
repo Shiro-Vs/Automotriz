@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../Styles/Modales/ModalError.css';
-import logo from '../../assets/Logos/logo.png'; // Asegúrate de tener este logo
+import logo from '../../assets/Logos/Logo.png'; // Asegúrate de tener este logo
 
 interface ModalErrorProps {
   isOpen: boolean;

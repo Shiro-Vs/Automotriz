@@ -1,6 +1,6 @@
 import React from "react";
 import "../../Styles/Modales/ModalRegistroExitoso.css";
-import logo from "../../assets/Logos/logo.png";
+import logo from "../../assets/Logos/Logo.png";
 
 interface ModalRegistroExitoProps {
     isOpen: boolean;

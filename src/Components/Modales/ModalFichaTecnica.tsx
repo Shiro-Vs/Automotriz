@@ -1,7 +1,7 @@
 // src/Components/ModalFichaTecnica.tsx
 import { useEffect, useState } from "react";
 
-import logo from "../../assets/Logos/logo.png";
+import logo from "../../assets/Logos/Logo.png";
 
 import "../../Styles/Modales/ModalFichaTecnica.css";
 
