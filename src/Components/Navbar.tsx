@@ -1,6 +1,6 @@
 import '../Styles/Componentes/Navbar.css';
 
-import logo from '../assets/Logos/logo.png';
+import logo from '../assets/Logos/Logo.png';
 import { Link } from "react-router-dom";
 
 import MenuDeslizable from './MenuDeslizable';
