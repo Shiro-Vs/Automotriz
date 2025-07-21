@@ -115,7 +115,7 @@ const Modal = ({ isOpen, onClose, onSubmit,onExito}: ModalProps) => {
 
     const buscarClientePorDNIoRUC = async (documento: string) => {
       try {
-        const res = await fetch('http://localhost:8080/api/clientes');
+        const res = await fetch('${import.meta.env.VITE_API_URL}/clientes');
         const data = await res.json();
 
         const clienteExistente = data.find((c: any) => c.dni === documento);
@@ -147,12 +147,12 @@ const Modal = ({ isOpen, onClose, onSubmit,onExito}: ModalProps) => {
       }
 
       try {
-        const clientesRes = await fetch('http://localhost:8080/api/clientes');
+        const clientesRes = await fetch('${import.meta.env.VITE_API_URL}/clientes');
         const clientes = await clientesRes.json();
         let clienteCreado = clientes.find((c: any) => c.dni === cliente.dni);
 
         if (!clienteCreado) {
-          const clienteRes = await fetch('http://localhost:8080/api/clientes', {
+          const clienteRes = await fetch('${import.meta.env.VITE_API_URL}/clientes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(cliente),
@@ -173,7 +173,7 @@ const Modal = ({ isOpen, onClose, onSubmit,onExito}: ModalProps) => {
           idCliente: clienteCreado.id,
         };
 
-        const vehiculoRes = await fetch('http://localhost:8080/api/vehiculos', {
+        const vehiculoRes = await fetch('${import.meta.env.VITE_API_URL}/vehiculos', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(vehiculoData),

@@ -54,7 +54,7 @@ const Clientes = () => {
   }, []);
 
   const cargarClientes = () => {
-    fetch("http://localhost:8080/api/clientes")
+    fetch("${import.meta.env.VITE_API_URL}/clientes")
       .then((res) => res.json())
       .then((data) => setClientes(data))
       .catch((err) => console.error("Error al obtener clientes:", err));
@@ -65,7 +65,7 @@ const Clientes = () => {
 
   // 🔍 Filtro de búsqueda
   const aplicarFiltros = () => {
-    fetch("http://localhost:8080/api/clientes")
+    fetch("${import.meta.env.VITE_API_URL}/clientes")
       .then((res) => res.json())
       .then((data) => {
         const filtrados = data.filter((cliente: Cliente) => {
@@ -89,7 +89,7 @@ const Clientes = () => {
     if (clienteSeleccionadoId === null) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/clientes/${clienteSeleccionadoId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/clientes/${clienteSeleccionadoId}`, {
         method: "DELETE",
       });
 
@@ -124,7 +124,7 @@ const Clientes = () => {
 
   const guardarCambios = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/clientes/${clienteEditando.id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/clientes/${clienteEditando.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(clienteEditando),

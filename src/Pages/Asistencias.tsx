@@ -29,7 +29,7 @@
     useEffect(() => {
       const fetchTrabajadores = async () => {
         try {
-          const response = await fetch("http://localhost:8080/api/trabajadores/activos");
+          const response = await fetch("${import.meta.env.VITE_API_URL}/trabajadores/activos");
           const data = await response.json();
           setTrabajadores(data);
           if (data.length > 0) {
@@ -49,7 +49,7 @@
         if (!trabajadorSeleccionado) return;
 
         try {
-          const response = await axios.get(`http://localhost:8080/api/asistencias/trabajador/${trabajadorSeleccionado}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/asistencias/trabajador/${trabajadorSeleccionado}`);
           const asistencias = response.data;
 
           let asistenciasCount = 0;
@@ -106,7 +106,7 @@
       };
 
       try {
-        const response = await axios.post("http://localhost:8080/api/horarios/guardar", horarioDTO);
+        const response = await axios.post("${import.meta.env.VITE_API_URL}/horarios/guardar", horarioDTO);
         if (response.status === 200) {
           setModalAbierto(true);
 
@@ -114,7 +114,7 @@
           formularioRef.current?.reset();
 
           // 🔄 Actualiza los datos
-          const nuevaRespuesta = await axios.get(`http://localhost:8080/api/horarios/trabajador/${trabajadorSeleccionado}`);
+          const nuevaRespuesta = await axios.get(`${import.meta.env.VITE_API_URL}/horarios/trabajador/${trabajadorSeleccionado}`);
           setHorario(nuevaRespuesta.data);
         } else {
           console.error("❌ Error al registrar horario:", response);
@@ -130,7 +130,7 @@
         if (!trabajadorSeleccionado) return;
 
         try {
-          const response = await axios.get(`http://localhost:8080/api/horarios/trabajador/${trabajadorSeleccionado}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/horarios/trabajador/${trabajadorSeleccionado}`);
           setHorario(response.data);
         } catch (error) {
           console.error("Error al cargar horario:", error);

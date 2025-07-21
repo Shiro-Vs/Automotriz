@@ -59,7 +59,7 @@ const Empleados = () => {
   // 📥 CARGAR TRABAJADORES DESDE API
   const cargarTrabajadores = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/trabajadores");
+      const res = await fetch("${import.meta.env.VITE_API_URL}/trabajadores");
       const data = await res.json();
       setTrabajadores(data);
       setTrabajadoresFiltrados(data);
@@ -77,7 +77,7 @@ const Empleados = () => {
     if (idTrabajadorSeleccionado === null) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/trabajadores/${idTrabajadorSeleccionado}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/trabajadores/${idTrabajadorSeleccionado}`, {
         method: "DELETE"
       });
 

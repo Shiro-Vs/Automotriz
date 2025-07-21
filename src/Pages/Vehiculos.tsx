@@ -83,7 +83,7 @@ const Vehiculos = () => {
 
   // 🔁 Obtener vehículos del backend
   useEffect(() => {
-    fetch('http://localhost:8080/api/vehiculos')
+    fetch('${import.meta.env.VITE_API_URL}/vehiculos')
       .then(res => res.json())
       .then(data => {
         const formateados = data.map((v: any) => ({ ...v, anio: Number(v.anio) }));
@@ -126,7 +126,7 @@ const Vehiculos = () => {
 
   const guardarCambiosVehiculo = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/vehiculos/${vehiculoEditando.id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${vehiculoEditando.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(vehiculoEditando)
@@ -159,7 +159,7 @@ const Vehiculos = () => {
     if (vehiculoSeleccionadoId === null) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/vehiculos/${vehiculoSeleccionadoId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${vehiculoSeleccionadoId}`, {
         method: 'DELETE'
       });
 

@@ -211,8 +211,8 @@ const ModalNuevoEmpleado = ({
             }
 
             const url = modo === 'editar' && trabajadorSeleccionado
-                ? `http://localhost:8080/api/trabajadores/${trabajadorSeleccionado.id}`
-                : 'http://localhost:8080/api/trabajadores';
+                ? `${import.meta.env.VITE_API_URL}/trabajadores/${trabajadorSeleccionado.id}`
+                : '${import.meta.env.VITE_API_URL}/trabajadores';
 
             const method = modo === 'editar' ? 'PUT' : 'POST';
 

@@ -46,7 +46,7 @@ const FichasTecnicas = () => {
 
   useEffect(() => {
     cargarFichasTecnicas();
-    fetch("http://localhost:8080/api/fichas-tecnicas")
+    fetch("${import.meta.env.VITE_API_URL}/fichas-tecnicas")
       .then((res) => res.json())
       .then((data) => setFichas(data))
       .catch((err) => console.error("Error al obtener fichas técnicas:", err));
@@ -75,7 +75,7 @@ const FichasTecnicas = () => {
     if (idFichaSeleccionada === null) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/api/fichas-tecnicas/${idFichaSeleccionada}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/fichas-tecnicas/${idFichaSeleccionada}`, {
         method: "DELETE",
       });
 
@@ -95,7 +95,7 @@ const FichasTecnicas = () => {
   };
 
   const cargarFichasTecnicas = () => {
-    fetch("http://localhost:8080/api/fichas-tecnicas")
+    fetch("${import.meta.env.VITE_API_URL}/fichas-tecnicas")
       .then((res) => res.json())
       .then((data) => setFichas(data))
       .catch((err) => console.error("Error al obtener fichas técnicas:", err));

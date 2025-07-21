@@ -30,7 +30,7 @@ export default function CalendarioAsistencias({ idTrabajador }: Props) {
   useEffect(() => {
     const fetchAsistencias = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/asistencias/trabajador/${idTrabajador}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/asistencias/trabajador/${idTrabajador}`);
         const data = response.data;
 
         const formateadas: Record<string, Asistencia> = {};
