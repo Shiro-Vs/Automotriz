@@ -188,7 +188,7 @@
         </div>
 
         <div className="contenido-asistencias">
-          <CalendarioAsistencias />
+          <CalendarioAsistencias idTrabajador={trabajadorSeleccionado || 0} />
 
           <form ref={formularioRef} className="horarios-trabajador" onSubmit={handleSubmit}>
             <h3>Horarios</h3>
