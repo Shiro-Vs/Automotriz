@@ -54,7 +54,7 @@ const Clientes = () => {
   }, []);
 
   const cargarClientes = () => {
-    fetch("${import.meta.env.VITE_API_URL}/clientes")
+    fetch(`${import.meta.env.VITE_API_URL}/clientes`)
       .then((res) => res.json())
       .then((data) => setClientes(data))
       .catch((err) => console.error("Error al obtener clientes:", err));
@@ -65,7 +65,7 @@ const Clientes = () => {
 
   // 🔍 Filtro de búsqueda
   const aplicarFiltros = () => {
-    fetch("${import.meta.env.VITE_API_URL}/clientes")
+    fetch(`${import.meta.env.VITE_API_URL}/clientes`)
       .then((res) => res.json())
       .then((data) => {
         const filtrados = data.filter((cliente: Cliente) => {

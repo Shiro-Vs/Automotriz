@@ -46,7 +46,7 @@ const FichasTecnicas = () => {
 
   useEffect(() => {
     cargarFichasTecnicas();
-    fetch("${import.meta.env.VITE_API_URL}/fichas-tecnicas")
+    fetch(`${import.meta.env.VITE_API_URL}/fichas-tecnicas`)
       .then((res) => res.json())
       .then((data) => setFichas(data))
       .catch((err) => console.error("Error al obtener fichas técnicas:", err));
@@ -95,7 +95,7 @@ const FichasTecnicas = () => {
   };
 
   const cargarFichasTecnicas = () => {
-    fetch("${import.meta.env.VITE_API_URL}/fichas-tecnicas")
+    fetch(`${import.meta.env.VITE_API_URL}/fichas-tecnicas`)
       .then((res) => res.json())
       .then((data) => setFichas(data))
       .catch((err) => console.error("Error al obtener fichas técnicas:", err));

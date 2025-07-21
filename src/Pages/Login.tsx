@@ -26,7 +26,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("${import.meta.env.VITE_API_URL}/trabajadores/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/trabajadores/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ dni: usuario, contrasenia }),
@@ -52,7 +52,7 @@ const Login = () => {
       const horaEntrada = fechaActual.toTimeString().split(" ")[0];
 
       if (rol === "administrador") {
-        const asistenciaResponse = await fetch("${import.meta.env.VITE_API_URL}/asistencias", {
+        const asistenciaResponse = await fetch(`${import.meta.env.VITE_API_URL}/asistencias`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -103,7 +103,7 @@ const Login = () => {
       };
 
       const response = await axios.post(
-        "${import.meta.env.VITE_API_URL}/asistencias",
+        `${import.meta.env.VITE_API_URL}/asistencias`,
         asistencia
       );
 

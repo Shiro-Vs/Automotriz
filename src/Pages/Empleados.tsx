@@ -59,7 +59,7 @@ const Empleados = () => {
   // 📥 CARGAR TRABAJADORES DESDE API
   const cargarTrabajadores = async () => {
     try {
-      const res = await fetch("${import.meta.env.VITE_API_URL}/trabajadores");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/trabajadores`);
       const data = await res.json();
       setTrabajadores(data);
       setTrabajadoresFiltrados(data);

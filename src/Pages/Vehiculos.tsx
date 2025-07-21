@@ -83,7 +83,7 @@ const Vehiculos = () => {
 
   // 🔁 Obtener vehículos del backend
   useEffect(() => {
-    fetch('${import.meta.env.VITE_API_URL}/vehiculos')
+    fetch(`${import.meta.env.VITE_API_URL}/vehiculos`)
       .then(res => res.json())
       .then(data => {
         const formateados = data.map((v: any) => ({ ...v, anio: Number(v.anio) }));

@@ -122,10 +122,6 @@ const ModalNuevoEmpleado = ({
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleRetiroDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm((prev) => ({ ...prev, fechaRetiro: e.target.value }));
-    };
-
     const handleCheckboxChange = () => {
         const nuevoRetirado = !retirado;
         setRetirado(nuevoRetirado);
