@@ -56,12 +56,12 @@ const ModalFichaTecnica = ({ isOpen, onClose, onRegistroExitoso, fichaEditar }: 
 
     useEffect(() => {
         if (isOpen) {
-            fetch("${import.meta.env.VITE_API_URL}/clientes")
+            fetch(`${import.meta.env.VITE_API_URL}/clientes`)
                 .then((res) => res.json())
                 .then(setClientes)
                 .catch(console.error);
 
-            fetch("${import.meta.env.VITE_API_URL}/vehiculos")
+            fetch(`${import.meta.env.VITE_API_URL}/vehiculos`)
                 .then((res) => res.json())
                 .then(setVehiculos)
                 .catch(console.error);
@@ -172,7 +172,7 @@ const ModalFichaTecnica = ({ isOpen, onClose, onRegistroExitoso, fichaEditar }: 
             estado: estadoMap[estado] || "EN_REPARACION"
         };
 
-        const url = fichaEditar ? `${import.meta.env.VITE_API_URL}/fichas-tecnicas/${fichaEditar.id}` : "${import.meta.env.VITE_API_URL}/fichas-tecnicas";
+        const url = fichaEditar ? `${import.meta.env.VITE_API_URL}/fichas-tecnicas/${fichaEditar.id}` : `${import.meta.env.VITE_API_URL}/fichas-tecnicas`;
         const metodo = fichaEditar ? "PUT" : "POST";
 
         try {
