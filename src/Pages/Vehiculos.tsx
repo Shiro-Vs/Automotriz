@@ -1,5 +1,5 @@
 // 📦 Dependencias
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 // 🎨 Estilos
@@ -14,33 +14,23 @@ import ModalEditarClienteVehiculo from '../Components/Modales/ModalEditarCliente
 import Filtros from '../Components/Filtros';
 import ModalExito from "../Components/Modales/ModalRegistroExito";
 
-// 🧾 Interfaces
-interface Vehiculo {
-  id: number;
-  placa: string;
-  marca: string;
-  modelo: string;
-  anio: number;
-  color: string;
-  fechaRegistro: string;
-  idCliente: number;
-  nombreCliente: string;
-}
+// 🪝 Hooks & Types
+import { useVehiculos } from '../hooks/useVehiculos';
+import type { Vehiculo } from '../types';
 
 const Vehiculos = () => {
-  // 🧪 Estados - Formato
-  const [anio, setAnio] = useState('');
+  // 🪝 Hook personalizado
+  const {
+    vehiculos, // Ya vienen filtrados
+    filtros,
+    actualizarFiltro,
+    limpiarFiltros,
+    agregarVehiculo,
+    editarVehiculo,
+    eliminarVehiculo
+  } = useVehiculos();
 
-  // 🎯 Estados - Filtros
-  const [marca, setMarca] = useState('');
-  const [modelo, setModelo] = useState('');
-  const [dueno, setDueno] = useState('');
-  const [fechaDesde, setFechaDesde] = useState<Date | null>(null);
-  const [fechaHasta, setFechaHasta] = useState<Date | null>(null);
-
-  // 🚘 Estados - Vehículos
-  const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
-  const [vehiculosFiltrados, setVehiculosFiltrados] = useState<Vehiculo[]>([]);
+  // 🚘 Estados locales UI (modales y selección)
   const [vehiculoSeleccionadoId, setVehiculoSeleccionadoId] = useState<number | null>(null);
   const [vehiculoEditando, setVehiculoEditando] = useState<Vehiculo>({
     id: 0, placa: '', marca: '', modelo: '', anio: 0,
@@ -55,59 +45,17 @@ const Vehiculos = () => {
   const [mensajeExito, setMensajeExito] = useState("");
   const [tituloExito, setTituloExito] = useState("");
 
-  // 🧹 Limpiar filtros
-  const limpiarFiltros = () => {
-    setMarca('');
-    setModelo('');
-    setAnio('');
-    setDueno('');
-    setFechaDesde(null);
-    setFechaHasta(null);
-    setVehiculosFiltrados(vehiculos);
-  };
-
   // ➕ Registrar vehículo
-  const registrarNuevoVehiculo = (vehiculo: Vehiculo) => {
-    setVehiculos(prev => {
-      const actualizados = [...prev, vehiculo];
-      setVehiculosFiltrados(actualizados); // 👈 también actualizamos la tabla
-      return actualizados;
-    });
-    setModalAbierto(false);
-
-    // Mostrar modal de éxito si lo deseas aquí
-    setMensajeExito("Vehículo registrado correctamente.");
-    setTituloExito("¡Registro Exitoso!");
-    setModalExitoAbierto(true);
-  };
-
-  // 🔁 Obtener vehículos del backend
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/vehiculos`)
-      .then(res => res.json())
-      .then(data => {
-        const formateados = data.map((v: any) => ({ ...v, anio: Number(v.anio) }));
-        setVehiculos(formateados);
-        setVehiculosFiltrados(formateados);
-      })
-      .catch(err => console.error('Error al obtener vehículos:', err));
-  }, []);
-
-  // 🔍 Filtrar vehículos
-  const filtrarVehiculos = () => {
-    const filtrados = vehiculos.filter(v => {
-      const fecha = new Date(v.fechaRegistro);
-      return (
-        (!fechaDesde || fecha >= fechaDesde) &&
-        (!fechaHasta || fecha <= fechaHasta) &&
-        (!marca || v.marca.toLowerCase().includes(marca.toLowerCase())) &&
-        (!modelo || v.modelo.toLowerCase().includes(modelo.toLowerCase())) &&
-        (!anio || v.anio.toString().includes(anio)) &&
-        (!dueno || v.nombreCliente.toLowerCase().includes(dueno.toLowerCase()))
-      );
-    });
-
-    setVehiculosFiltrados(filtrados);
+  const handleRegistrar = async (vehiculo: any) => {
+    try {
+      await agregarVehiculo(vehiculo);
+      setModalAbierto(false);
+      setMensajeExito("Vehículo registrado correctamente.");
+      setTituloExito("¡Registro Exitoso!");
+      setModalExitoAbierto(true);
+    } catch (error) {
+      alert('Error al registrar vehículo');
+    }
   };
 
   // 🖊️ Editar vehículo
@@ -126,60 +74,25 @@ const Vehiculos = () => {
 
   const guardarCambiosVehiculo = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${vehiculoEditando.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(vehiculoEditando)
-      });
-
-      if (res.ok) {
-        setVehiculos(prev =>
-          prev.map(v => (v.id === vehiculoEditando.id ? vehiculoEditando : v))
-        );
-
-        // ✅ Mostrar modal de éxito en lugar de alert
-        setMensajeExito('Vehículo editado correctamente.');
-        setTituloExito("¡Edición Exitosa!");
-        setModalExitoAbierto(true);
-
-        setModalEditarAbierto(false);
-      } else {
-        const msg = await res.text();
-        alert('Error: ' + msg);
-      }
+      await editarVehiculo(vehiculoEditando.id, vehiculoEditando);
+      setMensajeExito('Vehículo editado correctamente.');
+      setTituloExito("¡Edición Exitosa!");
+      setModalExitoAbierto(true);
+      setModalEditarAbierto(false);
     } catch (error) {
-      console.error('Error al actualizar vehículo:', error);
-      alert('Error inesperado al actualizar el vehículo.');
+      alert('Error al actualizar vehículo');
     }
   };
 
-
   // ❌ Eliminar vehículo
-  const eliminarVehiculo = async () => {
+  const handleEliminar = async () => {
     if (vehiculoSeleccionadoId === null) return;
-
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/vehiculos/${vehiculoSeleccionadoId}`, {
-        method: 'DELETE'
-      });
-
-      if (res.ok) {
-        // ✅ Actualizar ambos estados
-        setVehiculos(prev => {
-          const actualizados = prev.filter(v => v.id !== vehiculoSeleccionadoId);
-          setVehiculosFiltrados(actualizados); // 👈 Esto refresca la tabla
-          return actualizados;
-        });
-      } else {
-        const mensaje = await res.text();
-        alert('Error: ' + mensaje);
-      }
-    } catch (err) {
-      console.error('Error al eliminar vehículo:', err);
-      alert('Error inesperado al eliminar el vehículo.');
-    } finally {
+      await eliminarVehiculo(vehiculoSeleccionadoId);
       setVehiculoSeleccionadoId(null);
       setModalEliminarAbierto(false);
+    } catch (error) {
+      alert('Error al eliminar vehículo');
     }
   };
 
@@ -218,7 +131,7 @@ const Vehiculos = () => {
               </tr>
             </thead>
             <tbody>
-              {vehiculosFiltrados.map(v => (
+              {vehiculos.map(v => (
                 <tr key={v.id}>
                   <td>{v.placa}</td>
                   <td>{v.marca}</td>
@@ -255,20 +168,20 @@ const Vehiculos = () => {
             {
               tipo: 'fecha',
               label: 'Fecha desde:',
-              value: fechaDesde ? fechaDesde.toISOString() : '',
-              onChange: v => setFechaDesde(v ? new Date(v) : null)
+              value: filtros.fechaDesde ? filtros.fechaDesde.toISOString() : '',
+              onChange: v => actualizarFiltro('fechaDesde', v ? new Date(v) : null)
             },
             {
               tipo: 'fecha',
               label: 'Fecha hasta:',
-              value: fechaHasta ? fechaHasta.toISOString() : '',
-              onChange: v => setFechaHasta(v ? new Date(v) : null)
+              value: filtros.fechaHasta ? filtros.fechaHasta.toISOString() : '',
+              onChange: v => actualizarFiltro('fechaHasta', v ? new Date(v) : null)
             },
-            { tipo: 'input', label: 'Marca:', value: marca, onChange: setMarca, placeholder: 'Ej: Toyota' },
-            { tipo: 'input', label: 'Modelo:', value: modelo, onChange: setModelo, placeholder: 'Ej: Corolla' },
-            { tipo: 'input', label: 'Dueño:', value: dueno, onChange: setDueno, placeholder: 'Ej: Maria Suarez' }
+            { tipo: 'input', label: 'Marca:', value: filtros.marca, onChange: v => actualizarFiltro('marca', v), placeholder: 'Ej: Toyota' },
+            { tipo: 'input', label: 'Modelo:', value: filtros.modelo, onChange: v => actualizarFiltro('modelo', v), placeholder: 'Ej: Corolla' },
+            { tipo: 'input', label: 'Dueño:', value: filtros.dueno, onChange: v => actualizarFiltro('dueno', v), placeholder: 'Ej: Maria Suarez' }
           ]}
-          onFiltrar={filtrarVehiculos}
+          onFiltrar={() => {}} // El filtro es automático con el hook
           onExportar={exportarVehiculos}
           onLimpiar={limpiarFiltros}
         />
@@ -278,7 +191,7 @@ const Vehiculos = () => {
       <Modal
         isOpen={modalAbierto}
         onClose={() => setModalAbierto(false)}
-        onSubmit={registrarNuevoVehiculo}
+        onSubmit={handleRegistrar}
         onExito={(mensaje: string) => {
           setMensajeExito(mensaje);
           setTituloExito("¡Registro Exitoso!");
@@ -297,56 +210,47 @@ const Vehiculos = () => {
       <ModalEliminar
         isOpen={modalEliminarAbierto}
         onClose={() => setModalEliminarAbierto(false)}
-        onConfirm={eliminarVehiculo}
+        onConfirm={handleEliminar}
         entidad="el vehículo"
       />
 
       <ModalEditarClienteVehiculo
-        // Control de visibilidad del modal
         isOpen={modalEditarAbierto}
         onClose={() => setModalEditarAbierto(false)}
-
-        // Título del modal
         titulo="Editar Vehículo"
-
-        // Campos que se mostrarán en el formulario del modal
         campos={[
           {
             name: 'placa',
             label: 'Placa',
             type: 'text',
-            value: vehiculoEditando.placa, // Valor actual de la placa
+            value: vehiculoEditando.placa,
           },
           {
             name: 'marca',
             label: 'Marca',
             type: 'text',
-            value: vehiculoEditando.marca, // Valor actual de la marca
+            value: vehiculoEditando.marca,
           },
           {
             name: 'modelo',
             label: 'Modelo',
             type: 'text',
-            value: vehiculoEditando.modelo, // Valor actual del modelo
+            value: vehiculoEditando.modelo,
           },
           {
             name: 'anio',
             label: 'Año',
             type: 'number',
-            value: vehiculoEditando.anio?.toString() || '', // Convertimos a string, con fallback vacío
+            value: vehiculoEditando.anio?.toString() || '',
           },
           {
             name: 'color',
             label: 'Color',
             type: 'text',
-            value: vehiculoEditando.color, // Valor actual del color
+            value: vehiculoEditando.color,
           },
         ]}
-
-        // Función que maneja cambios en los inputs
         onChange={handleInputChange}
-
-        // Función que guarda los cambios realizados
         onSubmit={guardarCambiosVehiculo}
       />
 

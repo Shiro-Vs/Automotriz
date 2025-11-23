@@ -1,14 +1,5 @@
-
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-  font-family: sans-serif;
-}
-
 /* FONDO DIFUMINADO DE LA PÁGINA */
-.fondo-login {
+.fondoLogin {
   position: relative;
   height: 100vh;
   width: 100vw;
@@ -20,14 +11,14 @@ body, html {
 }
 
 /* CAPA CON IMAGEN DE FONDO DIFUMINADA */
-.fondo-login::before {
+.fondoLogin::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  background-image: url('../assets/Backgrounds/Fondo.jpg'); /* Cambia según tu estructura */
+  background-image: url("../../assets/Backgrounds/Fondo.jpg"); /* Adjusted path */
   background-repeat: no-repeat;
   background-position: top left;
   background-size: cover;
@@ -36,7 +27,7 @@ body, html {
 }
 
 /* CONTENEDOR DEL FORMULARIO (EFECTO VIDRIO) */
-.login-container {
+.loginContainer {
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -50,7 +41,7 @@ body, html {
 }
 
 /* TÍTULO */
-.login-container h2 {
+.loginContainer h2 {
   color: #001f3f;
   font-size: 30px;
   margin-bottom: 25px;
@@ -58,7 +49,7 @@ body, html {
 }
 
 /* FORMULARIO */
-.login-form {
+.loginForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -66,7 +57,7 @@ body, html {
 }
 
 /* ETIQUETAS DE LOS INPUTS */
-.login-form label {
+.loginForm label {
   font-weight: bold;
   font-size: 16px;
   margin-left: 3px;
@@ -74,7 +65,7 @@ body, html {
 }
 
 /* INPUTS (línea negra abajo, fondo transparente) */
-.login-form input {
+.loginForm input {
   padding: 8px;
   border: none;
   border-bottom: 2px solid black;
@@ -86,24 +77,24 @@ body, html {
   transition: border-color 0.2s;
 }
 
-.login-form input:focus {
+.loginForm input:focus {
   border-color: #014b96;
 }
 
 /* CONTENEDOR INPUT + ICONO (SOLO PARA CONTRASEÑA) */
-.input-con-icono {
+.inputConIcono {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-con-icono input {
+.inputConIcono input {
   width: 100%;
   padding-right: 30px;
 }
 
 /* ÍCONO OJITO PARA MOSTRAR/OCULTAR CONTRASEÑA */
-.icono-ojo {
+.iconoOjo {
   position: absolute;
   right: 8px;
   cursor: pointer;
@@ -112,25 +103,25 @@ body, html {
 }
 
 /* ENLACE DE OLVIDO DE CONTRASEÑA */
-.olvido-contrasena {
+.olvidoContrasena {
   margin-top: 15px;
   margin-bottom: 20px;
   font-size: 13px;
   text-align: left;
 }
 
-.olvido-contrasena a {
+.olvidoContrasena a {
   color: #2420ff;
   text-decoration: none;
   font-style: italic;
 }
 
-.olvido-contrasena a:hover {
+.olvidoContrasena a:hover {
   text-decoration: underline;
 }
 
 /* BOTÓN DE INGRESAR */
-.login-form button {
+.loginForm button {
   padding: 10px;
   background-color: #001f3f;
   color: white;
@@ -140,12 +131,12 @@ body, html {
   transition: background-color 0.2s;
 }
 
-.login-form button:hover {
+.loginForm button:hover {
   background-color: #003366;
 }
 
 /* TEXTO DE COPYRIGHT */
-.login-form .copyright {
+.loginForm .copyright {
   margin-top: 15px;
   font-size: 13px;
   color: #000000;

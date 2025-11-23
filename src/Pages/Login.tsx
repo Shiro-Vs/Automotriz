@@ -1,12 +1,13 @@
 // 📦 Importaciones
-import '../Styles/Login.css';
+import styles from '../Styles/Login.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import axios from 'axios';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ModalErrorInicioSesion from '../Components/Modales/ModalErrorInicioSesion';
 import ModalRegistrarAsistencia from '../Components/Modales/ModalRegistrarAsistencia';
 import ModalError from '../Components/Modales/ModalError';
+import { useAuth } from '../context/AuthContext';
+import { login as loginService, registrarAsistencia } from '../services/authService';
 
 const Login = () => {
   const [usuario, setUsuario] = useState("");
@@ -20,31 +21,18 @@ const Login = () => {
   const [mostrarErrorCredenciales, setMostrarErrorCredenciales] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // 🔐 Manejador del formulario
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/trabajadores/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dni: usuario, contrasenia }),
-      });
-
-      if (!response.ok) {
-        setMostrarErrorCredenciales(true);
-        setUsuario("");
-        setContrasena("");
-        return;
-      }
-
-      const data = await response.json();
+      const data = await loginService(usuario, contrasenia);
       console.log("✅ Login exitoso:", data);
 
-      localStorage.setItem("usuarioActual", data.nombre);
-      localStorage.setItem("rolUsuario", data.rol);
-      localStorage.setItem("idUsuario", data.id);
+      // Usar el contexto para guardar la sesión
+      login(data);
 
       const rol = data.rol.toLowerCase();
       const fechaActual = new Date();
@@ -52,27 +40,26 @@ const Login = () => {
       const horaEntrada = fechaActual.toTimeString().split(" ")[0];
 
       if (rol === "administrador") {
-        const asistenciaResponse = await fetch(`${import.meta.env.VITE_API_URL}/asistencias`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        try {
+          await registrarAsistencia({
             idTrabajador: data.id,
             fecha,
             horaEntrada,
             llegoTarde: false,
             falto: false,
-          }),
-        });
-
-        const resultado = await asistenciaResponse.text(); // <- ⚠️ Es un texto plano
-
-        if (resultado === "El usuario está inactivo.") {
-          setMensajeError("Usuario inactivo");
-          setMostrarError(true);
-          return;
+          });
+          navigate("/dashboard");
+        } catch (error: any) {
+          // Manejo específico si el usuario está inactivo (según lógica original)
+           if (error.response && error.response.data === "El usuario está inactivo.") {
+            setMensajeError("Usuario inactivo");
+            setMostrarError(true);
+            return;
+          }
+          // Si falla la asistencia pero es admin, quizás debería entrar igual?
+          // Mantengo lógica original de navegar
+          navigate("/dashboard");
         }
-
-        navigate("/dashboard");
       }
       else if (rol === "mecanico" || rol === "mecánico") {
         setTrabajadorId(data.id);
@@ -80,10 +67,16 @@ const Login = () => {
         setMostrarAsistenciaModal(true);
       }
 
-    } catch (error) {
-      console.error("❌ Error de red:", error);
-      setMensajeError("Error de red o servidor");
-      setMostrarError(true);
+    } catch (error: any) {
+      console.error("❌ Error:", error);
+      if (error.response && error.response.status === 401) {
+         setMostrarErrorCredenciales(true);
+         setUsuario("");
+         setContrasena("");
+      } else {
+        setMensajeError("Error de red o servidor");
+        setMostrarError(true);
+      }
     }
   };
 
@@ -94,32 +87,25 @@ const Login = () => {
       const fecha = fechaActual.toISOString().split("T")[0];
       const horaEntrada = fechaActual.toTimeString().split(" ")[0];
 
-      const asistencia = {
-        idTrabajador: idTrabajador,
+      await registrarAsistencia({
+        idTrabajador,
         fecha,
         horaEntrada,
         llegoTarde: false,
         falto: false,
-      };
+      });
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/asistencias`,
-        asistencia
-      );
+      console.log("✅ Asistencia registrada correctamente");
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("✅ Asistencia registrada correctamente");
-
-        if (rol !== "mecanico" && rol !== "mecánico") {
-          navigate("/dashboard");
-        } else {
-          alert("✅ Asistencia registrada. Contacta al administrador para más funciones.");
-        }
+      if (rol !== "mecanico" && rol !== "mecánico") {
+        navigate("/dashboard");
+      } else {
+        alert("✅ Asistencia registrada. Contacta al administrador para más funciones.");
       }
     } catch (error: any) {
       if (error.response && error.response.status === 403) {
-        setMensajeError("Usuario inactivo"); // Tu mensaje personalizado
-        setMostrarError(true); // Abrir el modal
+        setMensajeError("Usuario inactivo");
+        setMostrarError(true);
       } else {
         setMensajeError("Ocurrió un error al registrar asistencia");
         setMostrarError(true);
@@ -127,14 +113,12 @@ const Login = () => {
     }
   };
 
-
-
   return (
-    <div className="fondo-login">
-      <div className="login-container">
+    <div className={styles.fondoLogin}>
+      <div className={styles.loginContainer}>
         <h2>SAF SERVICE</h2>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
           <label htmlFor="usuario">Usuario</label>
           <input
             id="usuario"
@@ -143,12 +127,13 @@ const Login = () => {
             onChange={(e) => setUsuario(e.target.value)}
             placeholder="43841945"
             required
+            // Se recomienda usar CSS para el placeholder en focus, pero mantengo comportamiento original por ahora
             onFocus={(e) => (e.target.placeholder = "")}
             onBlur={(e) => (e.target.placeholder = "43841945")}
           />
 
           <label htmlFor="contrasena">Contraseña</label>
-          <div className="input-con-icono">
+          <div className={styles.inputConIcono}>
             <input
               id="contrasena"
               type={verPassword ? "text" : "password"}
@@ -160,20 +145,20 @@ const Login = () => {
               onBlur={(e) => (e.target.placeholder = "*************")}
             />
             <span
-              className="icono-ojo"
+              className={styles.iconoOjo}
               onClick={() => setVerPassword((prev) => !prev)}
             >
               {verPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
 
-          <div className="olvido-contrasena">
+          <div className={styles.olvidoContrasena}>
             <a href="#">¿Se te olvidó la contraseña?</a>
           </div>
 
           <button type="submit">Ingresar</button>
 
-          <p className="copyright">
+          <p className={styles.copyright}>
             @SafService todos los derechos reservados 2025
           </p>
         </form>
